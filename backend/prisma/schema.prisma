@@ -1,0 +1,365 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../node_modules/.prisma/client"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model cart_items {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  cart_id    String    @db.Uuid
+  product_id String    @db.Uuid
+  quantity   Int
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at DateTime? @default(now()) @db.Timestamptz(6)
+  carts      carts     @relation(fields: [cart_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([cart_id, product_id], map: "uq_cart_product")
+}
+
+model carts {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String       @unique @db.Uuid
+  created_at DateTime?    @default(now()) @db.Timestamptz(6)
+  updated_at DateTime?    @default(now()) @db.Timestamptz(6)
+  cart_items cart_items[]
+  users      users        @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model categories {
+  id            String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  category_name String      @unique @db.VarChar(100)
+  description   String?
+  is_active     Boolean     @default(true)
+  created_at    DateTime?   @default(now()) @db.Timestamp(6)
+  updated_at    DateTime?   @default(now()) @db.Timestamp(6)
+  products      products[]
+  rfq_items     rfq_items[]
+
+  @@index([is_active], map: "idx_categories_active")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model inventory {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_id             String                   @unique @db.Uuid
+  total_quantity         Int
+  reserved_quantity      Int                      @default(0)
+  low_stock_threshold    Int                      @default(10)
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  products               products                 @relation(fields: [product_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  inventory_transactions inventory_transactions[]
+
+  @@index([product_id], map: "idx_inventory_product")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model inventory_transactions {
+  id               String                     @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  inventory_id     String                     @db.Uuid
+  transaction_type inventory_transaction_type
+  quantity         Int
+  quantity_before  Int
+  quantity_after   Int
+  order_id         String?                    @db.Uuid
+  rfq_id           String?                    @db.Uuid
+  remarks          String?
+  created_by       String?                    @db.Uuid
+  created_at       DateTime?                  @default(now()) @db.Timestamptz(6)
+  users            users?                     @relation(fields: [created_by], references: [id], onUpdate: NoAction)
+  inventory        inventory                  @relation(fields: [inventory_id], references: [id], onUpdate: NoAction)
+
+  @@index([inventory_id, created_at(sort: Desc)], map: "idx_inv_transactions_audit")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model kyc_documents {
+  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nursery_id          String           @db.Uuid
+  document_type       String           @db.VarChar(50)
+  document_url        String
+  version_number      Int              @default(1)
+  verification_status String           @default("PENDING") @db.VarChar(20)
+  is_current          Boolean          @default(true)
+  admin_review_notes  String?
+  reviewed_by         String?          @db.Uuid
+  reviewed_at         DateTime?        @db.Timestamp(6)
+  uploaded_at         DateTime?        @default(now()) @db.Timestamp(6)
+  created_at          DateTime?        @default(now()) @db.Timestamp(6)
+  updated_at          DateTime?        @default(now()) @db.Timestamp(6)
+  nursery_profiles    nursery_profiles @relation(fields: [nursery_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users               users?           @relation(fields: [reviewed_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([is_current], map: "idx_kyc_current")
+  @@index([document_type], map: "idx_kyc_document_type")
+  @@index([nursery_id], map: "idx_kyc_nursery")
+  @@index([verification_status], map: "idx_kyc_verification_status")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model nursery_profiles {
+  id                      String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id                 String          @unique @db.Uuid
+  nursery_name            String          @db.VarChar(200)
+  address_line            String
+  district                String          @db.VarChar(100)
+  state                   String          @db.VarChar(100)
+  pincode                 String          @db.VarChar(6)
+  latitude                Decimal         @db.Decimal(10, 8)
+  longitude               Decimal         @db.Decimal(11, 8)
+  contact_person_name     String          @db.VarChar(150)
+  operating_hours         String          @db.VarChar(100)
+  social_media_url        String?
+  nursery_area_sqft       Decimal?        @db.Decimal(10, 2)
+  registration_department String?         @db.VarChar(50)
+  gst_number              String?         @db.VarChar(15)
+  fssai_license           String?         @db.VarChar(14)
+  apeda_registration      String?         @db.VarChar(50)
+  transport_type          String          @db.VarChar(20)
+  delivery_radius_km      Decimal?        @db.Decimal(6, 2)
+  approval_status         String          @default("PENDING") @db.VarChar(20)
+  admin_remarks           String?
+  created_at              DateTime?       @default(now()) @db.Timestamp(6)
+  updated_at              DateTime?       @default(now()) @db.Timestamp(6)
+  kyc_documents           kyc_documents[]
+  users                   users           @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  products                products[]
+  rfq_responses           rfq_responses[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model product_images {
+  id            String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  product_id    String    @db.Uuid
+  image_url     String
+  is_primary    Boolean   @default(false)
+  display_order Int       @default(1)
+  alt_text      String?   @db.VarChar(255)
+  review_status String    @default("PENDING") @db.VarChar(20)
+  review_notes  String?
+  reviewed_by   String?   @db.Uuid
+  reviewed_at   DateTime? @db.Timestamp(6)
+  created_at    DateTime? @default(now()) @db.Timestamp(6)
+  updated_at    DateTime? @default(now()) @db.Timestamp(6)
+  products      products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users         users?    @relation(fields: [reviewed_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@index([is_primary], map: "idx_product_images_primary")
+  @@index([product_id], map: "idx_product_images_product")
+  @@index([review_status], map: "idx_product_images_review_status")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model products {
+  id                   String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  nursery_id           String           @db.Uuid
+  category_id          String           @db.Uuid
+  scientific_name      String           @db.VarChar(255)
+  english_name         String           @db.VarChar(255)
+  kannada_name         String?          @db.VarChar(255)
+  description          String?
+  plant_type           String           @db.VarChar(20)
+  plant_age_months     Int?
+  polybag_size         String?          @db.VarChar(50)
+  propagation_method   String?          @db.VarChar(30)
+  growing_medium       String?          @db.VarChar(100)
+  sunlight_requirement String?          @db.VarChar(20)
+  water_requirement    String?          @db.VarChar(20)
+  price_per_unit       Decimal          @db.Decimal(10, 2)
+  is_ready_to_sell     Boolean          @default(false)
+  product_status       String           @default("ACTIVE") @db.VarChar(20)
+  status_reason        String?
+  created_at           DateTime?        @default(now()) @db.Timestamp(6)
+  updated_at           DateTime?        @default(now()) @db.Timestamp(6)
+  cart_items           cart_items[]
+  inventory            inventory?
+  product_images       product_images[]
+  categories           categories       @relation(fields: [category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  nursery_profiles     nursery_profiles @relation(fields: [nursery_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  wishlist_items       wishlist_items[]
+
+  @@index([category_id], map: "idx_products_category")
+  @@index([english_name], map: "idx_products_english_name")
+  @@index([nursery_id], map: "idx_products_nursery")
+  @@index([scientific_name], map: "idx_products_scientific_name")
+  @@index([product_status], map: "idx_products_status")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model rfq_items {
+  id                     String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rfq_id                 String      @db.Uuid
+  category_id            String?     @db.Uuid
+  requested_product_name String      @db.VarChar(255)
+  requested_quantity     Int
+  remarks                String?
+  created_at             DateTime?   @default(now()) @db.Timestamptz(6)
+  categories             categories? @relation(fields: [category_id], references: [id], onUpdate: NoAction)
+  rfqs                   rfqs        @relation(fields: [rfq_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([category_id], map: "idx_rfq_items_category")
+  @@index([rfq_id], map: "idx_rfq_items_rfq")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model rfq_responses {
+  id                      String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  rfq_id                  String              @db.Uuid
+  nursery_id              String              @db.Uuid
+  quoted_amount           Decimal             @db.Decimal(12, 2)
+  quantity_offered        Int
+  estimated_delivery_days Int
+  message                 String?
+  status                  rfq_response_status @default(SUBMITTED)
+  created_at              DateTime?           @default(now()) @db.Timestamptz(6)
+  nursery_profiles        nursery_profiles    @relation(fields: [nursery_id], references: [id], onUpdate: NoAction)
+  rfqs                    rfqs                @relation(fields: [rfq_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([rfq_id, nursery_id], map: "uq_rfq_nursery_response")
+  @@index([nursery_id], map: "idx_rfq_responses_nursery")
+  @@index([rfq_id], map: "idx_rfq_responses_rfq")
+  @@index([status], map: "idx_rfq_responses_status")
+}
+
+model rfqs {
+  id                  String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  buyer_id            String          @db.Uuid
+  delivery_address_id String          @db.Uuid
+  title               String          @db.VarChar(255)
+  description         String?
+  required_by_date    DateTime?       @db.Date
+  status              rfq_status      @default(OPEN)
+  created_at          DateTime?       @default(now()) @db.Timestamptz(6)
+  updated_at          DateTime?       @default(now()) @db.Timestamptz(6)
+  rfq_items           rfq_items[]
+  rfq_responses       rfq_responses[]
+  users               users           @relation(fields: [buyer_id], references: [id], onUpdate: NoAction)
+  user_addresses      user_addresses  @relation(fields: [delivery_address_id], references: [id], onUpdate: NoAction)
+
+  @@index([buyer_id], map: "idx_rfqs_buyer")
+  @@index([status], map: "idx_rfqs_status")
+}
+
+model roles {
+  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  role_name   String    @unique @db.VarChar(50)
+  description String?
+  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  users       users[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model user_addresses {
+  id                    String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id               String    @db.Uuid
+  address_label         String    @db.VarChar(50)
+  recipient_name        String    @db.VarChar(150)
+  mobile_number         String    @db.VarChar(15)
+  address_line_1        String
+  address_line_2        String?
+  landmark              String?   @db.VarChar(255)
+  village_city          String    @db.VarChar(150)
+  district              String    @db.VarChar(100)
+  state                 String    @db.VarChar(100)
+  pincode               String    @db.VarChar(6)
+  latitude              Decimal?  @db.Decimal(10, 8)
+  longitude             Decimal?  @db.Decimal(11, 8)
+  delivery_instructions String?
+  is_default            Boolean   @default(false)
+  created_at            DateTime? @default(now()) @db.Timestamptz(6)
+  updated_at            DateTime? @default(now()) @db.Timestamptz(6)
+  rfqs                  rfqs[]
+  users                 users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([pincode], map: "idx_user_addresses_pincode")
+  @@index([user_id], map: "idx_user_addresses_user")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model users {
+  id                     String                   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  full_name              String                   @db.VarChar(150)
+  mobile_number          String                   @unique @db.VarChar(15)
+  email                  String?                  @unique @db.VarChar(255)
+  password_hash          String
+  role_id                String                   @db.Uuid
+  account_status         account_status_enum      @default(ACTIVE)
+  verification_status    verification_status_enum @default(NOT_REQUIRED)
+  mobile_verified        Boolean?                 @default(false)
+  email_verified         Boolean?                 @default(false)
+  profile_image_url      String?
+  failed_login_attempts  Int?                     @default(0)
+  locked_until           DateTime?                @db.Timestamp(6)
+  last_login_at          DateTime?                @db.Timestamp(6)
+  is_deleted             Boolean?                 @default(false)
+  created_at             DateTime?                @default(now()) @db.Timestamp(6)
+  updated_at             DateTime?                @default(now()) @db.Timestamp(6)
+  carts                  carts?
+  inventory_transactions inventory_transactions[]
+  kyc_documents          kyc_documents[]
+  nursery_profiles       nursery_profiles?
+  product_images         product_images[]
+  rfqs                   rfqs[]
+  user_addresses         user_addresses[]
+  roles                  roles                    @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  wishlist_items         wishlist_items[]
+}
+
+model wishlist_items {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user_id    String    @db.Uuid
+  product_id String    @db.Uuid
+  created_at DateTime? @default(now()) @db.Timestamptz(6)
+  products   products  @relation(fields: [product_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([user_id, product_id], map: "uq_wishlist_user_product")
+  @@index([product_id], map: "idx_wishlist_product")
+  @@index([user_id], map: "idx_wishlist_user")
+}
+
+enum account_status_enum {
+  ACTIVE
+  SUSPENDED
+  BANNED
+  DEACTIVATED
+}
+
+enum inventory_transaction_type {
+  ADD_STOCK
+  REMOVE_STOCK
+  DAMAGED
+  SALE
+  RETURN
+  ADJUSTMENT
+  RESERVE_HOLD
+  RESERVE_RELEASE
+}
+
+enum rfq_response_status {
+  SUBMITTED
+  ACCEPTED
+  REJECTED
+}
+
+enum rfq_status {
+  OPEN
+  QUOTED
+  PARTIALLY_ACCEPTED
+  COMPLETED
+  CANCELLED
+}
+
+enum verification_status_enum {
+  NOT_REQUIRED
+  PENDING
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}

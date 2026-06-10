@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 import {
   View,
   Text,
   TouchableOpacity,
   StyleSheet,
   useColorScheme,
-} from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+} from "react-native";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
-export type UserRole = 'B2C_BUYER' | 'B2B_BUYER' | 'NURSERY_SELLER';
+export type UserRole = "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
 
 interface RoleOption {
   value: UserRole;
@@ -18,19 +18,19 @@ interface RoleOption {
 
 const ROLE_OPTIONS: RoleOption[] = [
   {
-    value: 'B2C_BUYER',
-    label: 'B2C Buyer',
-    description: 'Individual buyer',
+    value: "B2C_BUYER",
+    label: "B2C Buyer",
+    description: "Individual buyer",
   },
   {
-    value: 'B2B_BUYER',
-    label: 'B2B Buyer',
-    description: 'Business buyer',
+    value: "B2B_BUYER",
+    label: "B2B Buyer",
+    description: "Business buyer",
   },
   {
-    value: 'NURSERY_SELLER',
-    label: 'Nursery Seller',
-    description: 'Plant seller',
+    value: "NURSERY_SELLER",
+    label: "Nursery Seller",
+    description: "Plant seller",
   },
 ];
 
@@ -45,8 +45,8 @@ export const RoleSelection: React.FC<RoleSelectionProps> = ({
   onSelectRole,
   error,
 }) => {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
   const styles = createStyles(colors);
 
   return (
@@ -93,7 +93,7 @@ function createStyles(colors: any) {
     },
     label: {
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: colors.text,
       marginBottom: Spacing.md,
     },
@@ -104,8 +104,8 @@ function createStyles(colors: any) {
       gap: Spacing.md,
     },
     option: {
-      flexDirection: 'row',
-      alignItems: 'flex-start',
+      flexDirection: "row",
+      alignItems: "flex-start",
       borderWidth: 1,
       borderColor: colors.border,
       borderRadius: BorderRadius.md,
@@ -124,8 +124,8 @@ function createStyles(colors: any) {
       borderColor: colors.border,
       marginRight: Spacing.md,
       marginTop: 2,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
     radioSelected: {
       borderColor: colors.primary,
@@ -135,14 +135,14 @@ function createStyles(colors: any) {
       width: 8,
       height: 8,
       borderRadius: 4,
-      backgroundColor: '#FFFFFF',
+      backgroundColor: "#FFFFFF",
     },
     optionContent: {
       flex: 1,
     },
     optionLabel: {
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: colors.text,
       marginBottom: Spacing.xs,
     },
@@ -154,7 +154,7 @@ function createStyles(colors: any) {
       fontSize: 12,
       color: colors.error,
       marginTop: Spacing.md,
-      fontWeight: '500',
+      fontWeight: "500",
     },
   });
 }

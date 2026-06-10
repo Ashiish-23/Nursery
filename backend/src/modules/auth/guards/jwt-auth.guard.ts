@@ -6,7 +6,6 @@ import { Reflector } from '@nestjs/core';
 
 /**
  * JwtAuthGuard
- * 
  * Guard to protect routes that require JWT authentication
  * Can be used with @UseGuards(JwtAuthGuard) decorator
  * Allows public routes marked with @Public() decorator

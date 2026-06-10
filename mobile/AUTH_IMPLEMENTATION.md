@@ -71,6 +71,7 @@ yarn install
 ```
 
 New packages added:
+
 - `react-hook-form` - Form state management
 - `zod` - Schema validation
 - `@hookform/resolvers` - Connect Zod to React Hook Form
@@ -87,7 +88,8 @@ EXPO_PUBLIC_API_URL=http://10.41.110.104:3000
 Or update in [services/api.ts](services/api.ts):
 
 ```typescript
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.41.110.104:3000';
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || "http://10.41.110.104:3000";
 ```
 
 ## Project Structure
@@ -170,22 +172,22 @@ Response:
 ### Using Auth API
 
 ```typescript
-import { authApi } from '@/services/api';
-import { authStorage } from '@/services/auth-storage';
+import { authApi } from "@/services/api";
+import { authStorage } from "@/services/auth-storage";
 
 // Register
 const registerResponse = await authApi.register({
-  fullName: 'John Doe',
-  mobileNumber: '9876543210',
-  email: 'john@example.com',
-  password: 'SecurePass123',
-  role: 'B2C_BUYER',
+  fullName: "John Doe",
+  mobileNumber: "9876543210",
+  email: "john@example.com",
+  password: "SecurePass123",
+  role: "B2C_BUYER",
 });
 
 // Login
 const loginResponse = await authApi.login({
-  mobileNumber: '9876543210',
-  password: 'SecurePass123',
+  mobileNumber: "9876543210",
+  password: "SecurePass123",
 });
 
 // Logout
@@ -195,10 +197,10 @@ await authApi.logout();
 ### Using Auth Storage
 
 ```typescript
-import { authStorage } from '@/services/auth-storage';
+import { authStorage } from "@/services/auth-storage";
 
 // Save token
-await authStorage.saveToken('token_here');
+await authStorage.saveToken("token_here");
 
 // Get token
 const token = await authStorage.getToken();
@@ -258,25 +260,30 @@ export function MyForm() {
 ## Validation Rules
 
 ### Mobile Number
+
 - Must be 10 digits
 - Must start with 6, 7, 8, or 9 (Indian format)
 - Pattern: `/^[6-9]\d{9}$/`
 
 ### Email
+
 - Valid email format (optional for registration)
 - Pattern: Standard email regex
 
 ### Password
+
 - Minimum 8 characters
 - Must contain uppercase letter
 - Must contain lowercase letter
 - Must contain number
 
 ### Full Name
+
 - Minimum 2 characters
 - Maximum 100 characters
 
 ### Confirm Password
+
 - Must match password field
 
 ## Error Handling
@@ -291,11 +298,11 @@ try {
   const errorMessage =
     error.response?.data?.message ||
     error.message ||
-    'Operation failed. Please try again.';
-  
+    "Operation failed. Please try again.";
+
   setAlert({
-    type: 'error',
-    title: 'Error',
+    type: "error",
+    title: "Error",
     message: errorMessage,
   });
 }
@@ -304,6 +311,7 @@ try {
 ## Navigation Flow
 
 ### Register Screen
+
 ```
 /register
   ↓ (on success)
@@ -313,6 +321,7 @@ try {
 ```
 
 ### Login Screen
+
 ```
 /login
   ↓ (on success)
@@ -324,6 +333,7 @@ try {
 ## Secure Storage
 
 Tokens are stored in secure platform-specific storage:
+
 - **iOS**: Keychain
 - **Android**: Keystore
 

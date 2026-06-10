@@ -2,7 +2,6 @@ import { IsNotEmpty, IsString, MinLength } from 'class-validator';
 
 /**
  * LoginDto
- * 
  * Data Transfer Object for user login
  * Validates login request payload
  */

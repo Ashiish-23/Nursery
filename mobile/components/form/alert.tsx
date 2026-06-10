@@ -1,8 +1,15 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, useColorScheme, Animated, TouchableOpacity, } from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+import React, { useEffect, useState } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  useColorScheme,
+  Animated,
+  TouchableOpacity,
+} from "react-native";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
-export type AlertType = 'success' | 'error' | 'warning' | 'info';
+export type AlertType = "success" | "error" | "warning" | "info";
 
 interface AlertProps {
   type: AlertType;
@@ -18,10 +25,16 @@ interface AlertProps {
 }
 
 export const Alert: React.FC<AlertProps> = ({
-  type, title, message, visible, onDismiss, duration = 4000, action,
+  type,
+  title,
+  message,
+  visible,
+  onDismiss,
+  duration = 4000,
+  action,
 }) => {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
   const styles = createStyles(colors);
   const [animatedValue] = useState(new Animated.Value(0));
 
@@ -86,10 +99,7 @@ export const Alert: React.FC<AlertProps> = ({
             <Text style={styles.actionText}>{action.label}</Text>
           </TouchableOpacity>
         )}
-        <TouchableOpacity
-          onPress={handleDismiss}
-          style={styles.closeButton}
-        >
+        <TouchableOpacity onPress={handleDismiss} style={styles.closeButton}>
           <Text style={styles.closeButtonText}>✕</Text>
         </TouchableOpacity>
       </View>
@@ -100,9 +110,9 @@ export const Alert: React.FC<AlertProps> = ({
 function createStyles(colors: any) {
   return StyleSheet.create({
     container: {
-      flexDirection: 'row',
-      alignItems: 'center',
-      justifyContent: 'space-between',
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
       paddingHorizontal: Spacing.md,
       paddingVertical: Spacing.md,
       borderRadius: BorderRadius.md,
@@ -126,18 +136,18 @@ function createStyles(colors: any) {
     },
     title: {
       fontSize: 14,
-      fontWeight: '600',
-      color: '#FFFFFF',
+      fontWeight: "600",
+      color: "#FFFFFF",
       marginBottom: Spacing.xs,
     },
     message: {
       fontSize: 13,
-      color: '#FFFFFF',
+      color: "#FFFFFF",
       lineHeight: 18,
     },
     actionsContainer: {
-      flexDirection: 'row',
-      alignItems: 'center',
+      flexDirection: "row",
+      alignItems: "center",
       gap: Spacing.sm,
     },
     actionButton: {
@@ -146,8 +156,8 @@ function createStyles(colors: any) {
     },
     actionText: {
       fontSize: 12,
-      fontWeight: '600',
-      color: '#FFFFFF',
+      fontWeight: "600",
+      color: "#FFFFFF",
     },
     closeButton: {
       paddingHorizontal: Spacing.sm,
@@ -155,8 +165,8 @@ function createStyles(colors: any) {
     },
     closeButtonText: {
       fontSize: 18,
-      color: '#FFFFFF',
-      fontWeight: '600',
+      color: "#FFFFFF",
+      fontWeight: "600",
     },
   });
 }

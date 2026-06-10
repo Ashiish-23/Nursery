@@ -3,23 +3,28 @@
 ## Files Overview
 
 ### Core Services
+
 - **[services/api.ts](services/api.ts)** - Axios instance with JWT interceptors
 - **[services/auth-storage.ts](services/auth-storage.ts)** - Secure token and user storage
 
 ### Screens
+
 - **[app/register.tsx](app/register.tsx)** - Register screen (7 fields, validation, JWT save)
 - **[app/login.tsx](app/login.tsx)** - Login screen (2 fields, validation, JWT save)
 
 ### Components
+
 - **[components/form/text-input.tsx](components/form/text-input.tsx)** - Reusable input with validation
 - **[components/form/button.tsx](components/form/button.tsx)** - Button with loading state
 - **[components/form/role-selection.tsx](components/form/role-selection.tsx)** - Role picker
 - **[components/form/alert.tsx](components/form/alert.tsx)** - Animated alerts
 
 ### Hooks
+
 - **[hooks/use-auth.ts](hooks/use-auth.ts)** - Auth state & navigation logic
 
 ### Theme
+
 - **[constants/theme.ts](constants/theme.ts)** - Colors, spacing, fonts
 
 ## Common Tasks
@@ -27,7 +32,7 @@
 ### Check if User is Authenticated
 
 ```typescript
-import { authStorage } from '@/services/auth-storage';
+import { authStorage } from "@/services/auth-storage";
 
 const isAuth = await authStorage.isAuthenticated();
 ```
@@ -35,7 +40,7 @@ const isAuth = await authStorage.isAuthenticated();
 ### Get Current User
 
 ```typescript
-import { authStorage } from '@/services/auth-storage';
+import { authStorage } from "@/services/auth-storage";
 
 const user = await authStorage.getUser();
 console.log(user.fullName); // John Doe
@@ -44,16 +49,16 @@ console.log(user.fullName); // John Doe
 ### Make API Request (JWT Auto-Added)
 
 ```typescript
-import { api } from '@/services/api';
+import { api } from "@/services/api";
 
-const response = await api.get('/user/profile');
+const response = await api.get("/user/profile");
 // JWT token automatically added to headers
 ```
 
 ### Logout
 
 ```typescript
-import { authApi } from '@/services/api';
+import { authApi } from "@/services/api";
 
 await authApi.logout(); // Clears token and user
 ```
@@ -65,11 +70,11 @@ import { useAuth } from '@/hooks/use-auth';
 
 export function MyComponent() {
   const { isLoading, user, isSignedIn } = useAuth();
-  
+
   if (isLoading) return <ActivityIndicator />;
-  
+
   if (!isSignedIn) return <Text>Not logged in</Text>;
-  
+
   return <Text>Welcome {user?.fullName}</Text>;
 }
 ```
@@ -81,20 +86,20 @@ const onSubmit = async (data) => {
   try {
     setIsLoading(true);
     const response = await authApi.register(data);
-    
+
     // Save token
     await authStorage.saveToken(response.accessToken);
-    
+
     // Save user
     await authStorage.saveUser(response.user);
-    
+
     // Navigate
-    router.replace('/(tabs)/');
+    router.replace("/(tabs)/");
   } catch (error) {
     setAlert({
-      type: 'error',
-      title: 'Error',
-      message: error.response?.data?.message || 'Failed',
+      type: "error",
+      title: "Error",
+      message: error.response?.data?.message || "Failed",
     });
   } finally {
     setIsLoading(false);
@@ -197,19 +202,19 @@ Example: `MyPassword123`
 ### Check Stored Token
 
 ```typescript
-import { authStorage } from '@/services/auth-storage';
+import { authStorage } from "@/services/auth-storage";
 
 const token = await authStorage.getToken();
-console.log('Token:', token);
+console.log("Token:", token);
 ```
 
 ### Check API Configuration
 
 ```typescript
-import { api } from '@/services/api';
+import { api } from "@/services/api";
 
-console.log('Base URL:', api.defaults.baseURL);
-console.log('Headers:', api.defaults.headers);
+console.log("Base URL:", api.defaults.baseURL);
+console.log("Headers:", api.defaults.headers);
 ```
 
 ### Monitor API Calls
@@ -218,12 +223,12 @@ Add to [services/api.ts](services/api.ts):
 
 ```typescript
 api.interceptors.request.use((config) => {
-  console.log('API Request:', config.url, config.data);
+  console.log("API Request:", config.url, config.data);
   return config;
 });
 
 api.interceptors.response.use((response) => {
-  console.log('API Response:', response.status, response.data);
+  console.log("API Response:", response.status, response.data);
   return response;
 });
 ```

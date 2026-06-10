@@ -2,7 +2,7 @@ import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 
 /**
  * GetUser Decorator
- * 
+ *
  * Extracts user from the request context
  * Can be used in route handlers: @GetUser() user: any
  */

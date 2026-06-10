@@ -1,22 +1,26 @@
 # 🚀 Getting Started Checklist
 
 ## Pre-Setup ✓
+
 - [ ] Node.js 18+ installed
 - [ ] React Native development environment set up
 - [ ] Expo CLI installed: `npm install -g expo-cli`
 - [ ] Backend running on http://10.41.110.104:3000 (or configured URL)
 
 ## Installation ✓
+
 - [ ] Run `cd mobile && npm install`
 - [ ] Verify no critical errors in npm output
 - [ ] All 26 new dependencies installed successfully
 
 ## Configuration ✓
+
 - [ ] Copy `.env.local.example` to `.env.local`
 - [ ] Update `EXPO_PUBLIC_API_URL` if backend is on different host/port
 - [ ] For local development, use: `http://10.41.110.104:3000`
 
 ## File Structure Verification ✓
+
 - [ ] `app/register.tsx` exists and has 260+ lines
 - [ ] `app/login.tsx` exists and has 210+ lines
 - [ ] `services/api.ts` has request/response interceptors
@@ -27,10 +31,13 @@
 - [ ] `constants/theme.ts` has plant-themed colors
 
 ## Start Development Server ✓
+
 ```bash
 npm start
 ```
+
 Expected output:
+
 ```
 ► Select a platform to open:
   › iOS
@@ -42,32 +49,39 @@ Expected output:
 ## Test on Device/Emulator ✓
 
 ### iOS
+
 ```bash
 npm run ios
 ```
+
 - [ ] App opens in iOS simulator
 - [ ] Register screen loads without errors
 - [ ] Login screen loads without errors
 - [ ] Theme colors look correct
 
 ### Android
+
 ```bash
 npm run android
 ```
+
 - [ ] App opens in Android emulator
 - [ ] Register screen loads without errors
 - [ ] Login screen loads without errors
 - [ ] Theme colors look correct
 
 ### Web (Optional)
+
 ```bash
 npm run web
 ```
+
 - [ ] Runs in browser
 - [ ] Form displays correctly
 - [ ] Can fill and submit forms
 
 ## Test Registration Flow ✓
+
 - [ ] Enter valid full name (John Doe)
 - [ ] Enter valid mobile number (9876543210)
 - [ ] Enter optional email (john@example.com)
@@ -81,6 +95,7 @@ npm run web
 - [ ] Navigation to home occurs on success
 
 ## Test Login Flow ✓
+
 - [ ] Navigate to login via "Already have account" button
 - [ ] Enter valid mobile number (9876543210)
 - [ ] Enter password (MyPassword123)
@@ -90,6 +105,7 @@ npm run web
 - [ ] Navigation to home occurs on success
 
 ## Test Validation ✓
+
 - [ ] Leave mobile number empty → Shows error "Invalid mobile number"
 - [ ] Enter 9-digit number → Shows error "Invalid mobile number"
 - [ ] Enter password with only letters → Shows error about numbers
@@ -98,44 +114,52 @@ npm run web
 - [ ] Enter invalid email format → Shows error
 
 ## Test Dark Mode ✓
+
 - [ ] Toggle device dark mode
 - [ ] App theme changes automatically
 - [ ] Colors are readable in both modes
 - [ ] Form components look good in dark mode
 
 ## Test Error Handling ✓
+
 - [ ] Backend returns error → Display error message
 - [ ] Network timeout → Show timeout error
 - [ ] Invalid credentials → Show "Invalid credentials" error
 - [ ] Alerts auto-dismiss after 4 seconds
 
 ## Test Loading States ✓
+
 - [ ] Button shows spinner during submission
 - [ ] Form inputs disabled during submission
 - [ ] Button text changes during loading
 - [ ] User can't double-submit
 
 ## Verify Type Safety ✓
+
 ```bash
 npm run lint
 ```
+
 - [ ] No TypeScript errors
 - [ ] No console warnings
 - [ ] No missing type definitions
 
 ## Documentation Review ✓
+
 - [ ] Read AUTH_IMPLEMENTATION.md
 - [ ] Read AUTH_QUICK_REFERENCE.md
 - [ ] Read IMPLEMENTATION_COMPLETE.md
 - [ ] Understand API requirements
 
 ## Performance Optimization ✓
+
 - [ ] Bundle size is reasonable
 - [ ] No memory leaks in loading
 - [ ] Animations are smooth
 - [ ] Form submission is fast
 
 ## Backend Integration ✓
+
 - [ ] Backend has POST /auth/register endpoint
 - [ ] Backend has POST /auth/login endpoint
 - [ ] Backend returns JWT access token
@@ -145,6 +169,7 @@ npm run lint
 - [ ] Backend returns proper error messages
 
 ## Security Check ✓
+
 - [ ] JWT token stored in secure storage (not localStorage)
 - [ ] Token not logged to console
 - [ ] Passwords not stored locally
@@ -152,6 +177,7 @@ npm run lint
 - [ ] API base URL configurable via environment
 
 ## Production Readiness ✓
+
 - [ ] All features tested
 - [ ] No console errors or warnings
 - [ ] Error handling implemented
@@ -162,6 +188,7 @@ npm run lint
 - [ ] Documentation is complete
 
 ## Deployment Prep ✓
+
 - [ ] Update API_URL for production
 - [ ] Remove debug logging
 - [ ] Enable minification
@@ -175,13 +202,16 @@ npm run lint
 ## 📝 Notes for Developers
 
 ### Debugging Tips
+
 - Open React DevTools: Press 'D' in Expo CLI
 - View logs: Open browser console or terminal output
 - Profile performance: Use React Profiler in DevTools
 - Check API calls: Use browser network tab (web) or interceptor logs
 
 ### Common Issues
+
 If registration/login fails:
+
 1. Verify backend is running: `curl http://10.41.110.104:3000/health`
 2. Check API URL in `.env.local`
 3. Verify endpoint paths: `/auth/register` and `/auth/login`
@@ -189,6 +219,7 @@ If registration/login fails:
 5. View backend logs for errors
 
 ### Quick Commands
+
 ```bash
 npm start                 # Start dev server
 npm run ios              # Run on iOS
@@ -200,6 +231,7 @@ npm update               # Update packages
 ```
 
 ### File Structure Quick Navigation
+
 ```
 Register Logic      → app/register.tsx
 Login Logic         → app/login.tsx

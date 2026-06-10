@@ -3,7 +3,7 @@ import { PrismaClient } from '@prisma/client';
 
 /**
  * PrismaService
- * 
+ *
  * Extends PrismaClient to provide database access throughout the application
  * Handles connection lifecycle (init and destroy)
  * Should be imported globally in CoreModule

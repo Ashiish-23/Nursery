@@ -1,13 +1,14 @@
-import axios, { AxiosInstance, AxiosError } from 'axios';
-import { authStorage } from './auth-storage';
+import axios, { AxiosInstance, AxiosError } from "axios";
+import { authStorage } from "./auth-storage";
 
 // API Configuration
-const API_BASE_URL = process.env.EXPO_PUBLIC_API_URL || 'http://10.41.110.104:3000';
+const API_BASE_URL =
+  process.env.EXPO_PUBLIC_API_URL || "http://10.41.110.104:3000";
 
 export const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
   headers: {
-    'Content-Type': 'application/json',
+    "Content-Type": "application/json",
   },
   timeout: 15000,
 });
@@ -21,13 +22,13 @@ api.interceptors.request.use(
         config.headers.Authorization = `Bearer ${token}`;
       }
     } catch (error) {
-      console.error('Error adding token to request:', error);
+      console.error("Error adding token to request:", error);
     }
     return config;
   },
   (error) => {
     return Promise.reject(error);
-  }
+  },
 );
 
 // Response interceptor - Handle auth errors
@@ -39,11 +40,11 @@ api.interceptors.response.use(
       try {
         await authStorage.clearAll();
       } catch (err) {
-        console.error('Error clearing auth data:', err);
+        console.error("Error clearing auth data:", err);
       }
     }
     return Promise.reject(error);
-  }
+  },
 );
 
 // API Methods
@@ -53,23 +54,23 @@ export const authApi = {
     mobileNumber: string;
     email?: string;
     password: string;
-    role: 'B2C_BUYER' | 'B2B_BUYER' | 'NURSERY_SELLER';
+    role: "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
   }) => {
-    const response = await api.post('/auth/register', data);
+    const response = await api.post("/auth/register", data);
     return response.data;
   },
 
   login: async (data: { mobileNumber: string; password: string }) => {
-    const response = await api.post('/auth/login', data);
+    const response = await api.post("/auth/login", data);
     return response.data;
   },
 
   logout: async () => {
     try {
       // Call logout endpoint if it exists
-      await api.post('/auth/logout');
+      await api.post("/auth/logout");
     } catch (error) {
-      console.error('Error calling logout endpoint:', error);
+      console.error("Error calling logout endpoint:", error);
     }
     // Always clear local storage
     await authStorage.clearAll();

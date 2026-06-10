@@ -5,21 +5,21 @@ import { ConfigService } from './config/config.service';
 
 /**
  * Core Module
- * 
+ *
  * Provides core infrastructure:
  * - Prisma database client
  * - Configuration management
  * - Environment validation
  * - JWT configuration
- * 
+ *
  * This module should be imported globally in AppModule
  */
 @Module({
   imports: [
     JwtModule.register({
       secret: process.env.JWT_SECRET || 'your-secret-key-change-in-production',
-      signOptions: { 
-        expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '86400') 
+      signOptions: {
+        expiresIn: parseInt(process.env.JWT_EXPIRES_IN || '86400'),
       },
     }),
   ],

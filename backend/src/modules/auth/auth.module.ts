@@ -8,22 +8,16 @@ import { CoreModule } from '../../core/core.module';
 
 /**
  * Auth Module
- * 
  * Handles authentication and authorization:
  * - JWT-based authentication
  * - Login/Registration
  * - Role-based access control
  * - Auth guards and decorators
- * 
  * Dependencies: Common, Core, Users
  * Dependents: All other modules
  */
 @Module({
-  imports: [
-    CoreModule,
-    PassportModule,
-    UsersModule,
-  ],
+  imports: [CoreModule, PassportModule, UsersModule],
   controllers: [AuthController],
   providers: [AuthService, JwtStrategy],
   exports: [AuthService],

@@ -1,14 +1,14 @@
-import * as SecureStore from 'expo-secure-store';
+import * as SecureStore from "expo-secure-store";
 
-const TOKEN_KEY = 'sasyavana_access_token';
-const USER_KEY = 'sasyavana_user';
+const TOKEN_KEY = "sasyavana_access_token";
+const USER_KEY = "sasyavana_user";
 
 interface User {
   id: string;
   email?: string;
   mobileNumber: string;
   fullName: string;
-  role: 'B2C_BUYER' | 'B2B_BUYER' | 'NURSERY_SELLER';
+  role: "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
 }
 
 export const authStorage = {
@@ -17,7 +17,7 @@ export const authStorage = {
     try {
       await SecureStore.setItemAsync(TOKEN_KEY, token);
     } catch (error) {
-      console.error('Error saving token:', error);
+      console.error("Error saving token:", error);
       throw error;
     }
   },
@@ -28,7 +28,7 @@ export const authStorage = {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
       return token;
     } catch (error) {
-      console.error('Error retrieving token:', error);
+      console.error("Error retrieving token:", error);
       return null;
     }
   },
@@ -38,7 +38,7 @@ export const authStorage = {
     try {
       await SecureStore.deleteItemAsync(TOKEN_KEY);
     } catch (error) {
-      console.error('Error removing token:', error);
+      console.error("Error removing token:", error);
       throw error;
     }
   },
@@ -48,7 +48,7 @@ export const authStorage = {
     try {
       await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
     } catch (error) {
-      console.error('Error saving user:', error);
+      console.error("Error saving user:", error);
       throw error;
     }
   },
@@ -59,7 +59,7 @@ export const authStorage = {
       const userJson = await SecureStore.getItemAsync(USER_KEY);
       return userJson ? JSON.parse(userJson) : null;
     } catch (error) {
-      console.error('Error retrieving user:', error);
+      console.error("Error retrieving user:", error);
       return null;
     }
   },
@@ -69,7 +69,7 @@ export const authStorage = {
     try {
       await SecureStore.deleteItemAsync(USER_KEY);
     } catch (error) {
-      console.error('Error removing user:', error);
+      console.error("Error removing user:", error);
       throw error;
     }
   },
@@ -82,7 +82,7 @@ export const authStorage = {
         SecureStore.deleteItemAsync(USER_KEY),
       ]);
     } catch (error) {
-      console.error('Error clearing auth storage:', error);
+      console.error("Error clearing auth storage:", error);
       throw error;
     }
   },
@@ -93,7 +93,7 @@ export const authStorage = {
       const token = await SecureStore.getItemAsync(TOKEN_KEY);
       return !!token;
     } catch (error) {
-      console.error('Error checking authentication:', error);
+      console.error("Error checking authentication:", error);
       return false;
     }
   },

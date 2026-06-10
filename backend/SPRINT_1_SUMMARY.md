@@ -7,6 +7,7 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 ### Features Implemented
 
 #### 1. **User Registration**
+
 - Full name, mobile number, email (optional), password, and role selection
 - **Validation**:
   - Unique mobile number constraint
@@ -19,6 +20,7 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
   - Returns JWT token upon successful registration
 
 #### 2. **User Login**
+
 - Mobile number + Password authentication
 - **Security**:
   - Constant-time password comparison using bcrypt
@@ -28,12 +30,14 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
   - User information (excluding password)
 
 #### 3. **JWT-Based Authentication**
+
 - Bearer token in Authorization header
 - 24-hour token expiry (86400 seconds)
 - HS256 signing algorithm
 - Public routes support with @Public() decorator
 
 #### 4. **Role-Based Access Control**
+
 - Three predefined roles: B2C_BUYER, B2B_BUYER, NURSERY_SELLER
 - Role information included in JWT payload
 - Extensible for future authorization rules
@@ -61,10 +65,10 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 
 ### Authentication Module (10 files)
 
-**DTOs:**
-4. **`src/modules/auth/dto/register.dto.ts`** (Created)
-   - Validates registration payload
-   - Enforces data types and constraints
+**DTOs:** 4. **`src/modules/auth/dto/register.dto.ts`** (Created)
+
+- Validates registration payload
+- Enforces data types and constraints
 
 5. **`src/modules/auth/dto/login.dto.ts`** (Created)
    - Validates login credentials
@@ -77,23 +81,19 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 7. **`src/modules/auth/dto/index.ts`** (Created)
    - Exports all DTOs for convenient importing
 
-**Services & Strategies:**
-8. **`src/modules/auth/auth.service.ts`** (Created)
-   - Registration logic with validation and hashing
-   - Login logic with password verification
-   - JWT token generation
-   - User role retrieval
+**Services & Strategies:** 8. **`src/modules/auth/auth.service.ts`** (Created)
+
+- Registration logic with validation and hashing
+- Login logic with password verification
+- JWT token generation
+- User role retrieval
 
 9. **`src/modules/auth/strategies/jwt.strategy.ts`** (Created)
    - Passport.js JWT strategy
    - Token validation and extraction
    - User payload attachment to request
 
-**Guards & Controllers:**
-10. **`src/modules/auth/guards/jwt-auth.guard.ts`** (Created)
-    - Route protection guard
-    - Supports @Public() decorator bypass
-    - Leverages JwtAuthGuard from Passport
+**Guards & Controllers:** 10. **`src/modules/auth/guards/jwt-auth.guard.ts`** (Created) - Route protection guard - Supports @Public() decorator bypass - Leverages JwtAuthGuard from Passport
 
 11. **`src/modules/auth/guards/index.ts`** (Created)
     - Guard exports
@@ -183,28 +183,33 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 ## 🔐 Security Features Implemented
 
 ### 1. **Password Security**
+
 - **Algorithm**: Bcrypt with 10 salt rounds
 - **Resistance**: Rainbow table and brute-force attacks
 - **Timing**: Constant-time comparison prevents timing attacks
 
 ### 2. **Token Security**
+
 - **Signing**: HS256 algorithm with secure secret
 - **Expiry**: 24-hour TTL (configurable)
 - **Transport**: Authorization header with Bearer scheme
 - **Storage**: Client should use secure HTTP-only cookies
 
 ### 3. **Data Validation**
+
 - **Type Checking**: TypeScript strict mode
 - **Request Validation**: class-validator DTOs
 - **Whitelist Mode**: Unknown properties rejected
 - **Type Coercion**: Automatic type conversion with class-transformer
 
 ### 4. **Route Protection**
+
 - **Default**: All routes protected by JwtAuthGuard
 - **Exception**: @Public() decorator for unprotected routes
 - **User Attachment**: Authenticated user attached to request
 
 ### 5. **Error Handling**
+
 - **Generic Messages**: Don't reveal whether mobile exists
 - **No Stack Traces**: Production-safe error responses
 - **Consistent Format**: Standardized error responses
@@ -214,6 +219,7 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 ## 🚀 Installation & Setup
 
 ### Prerequisites
+
 ```bash
 - Node.js 18+
 - PostgreSQL 12+
@@ -221,6 +227,7 @@ Sprint 1 successfully implements **Authentication** and **Users** modules for Sa
 ```
 
 ### Installation Steps
+
 ```bash
 cd backend
 npm install
@@ -230,6 +237,7 @@ npm run start:dev   # Start with hot reload
 ```
 
 ### Environment Setup
+
 ```bash
 # .env file
 DATABASE_URL="postgresql://user:pass@localhost:5432/sasyavana_db"
@@ -244,6 +252,7 @@ PORT="3000"
 ## 📊 Database Schema
 
 ### roles table
+
 ```
 id          UUID (PK)
 role_name   VARCHAR(50) UNIQUE
@@ -251,6 +260,7 @@ description TEXT
 ```
 
 ### users table
+
 ```
 id                    UUID (PK)
 full_name             VARCHAR(150)
@@ -273,11 +283,13 @@ updated_at            TIMESTAMP
 ### Authentication
 
 **Register User:**
+
 - `POST /auth/register`
 - **Status**: 201 Created
 - **Body**: `{ full_name, mobile_number, email?, password, role }`
 
 **Login User:**
+
 - `POST /auth/login`
 - **Status**: 200 OK
 - **Body**: `{ mobile_number, password }`
@@ -285,11 +297,13 @@ updated_at            TIMESTAMP
 ### Users
 
 **Get User Profile:**
+
 - `GET /users/:id`
 - **Auth**: Required (Bearer token)
 - **Status**: 200 OK
 
 **Get All Roles:**
+
 - `GET /users/roles/all`
 - **Auth**: Not required
 - **Status**: 200 OK
@@ -301,6 +315,7 @@ updated_at            TIMESTAMP
 ### Manual API Tests
 
 **Register a user:**
+
 ```bash
 curl -X POST http://localhost:3000/auth/register \
   -H "Content-Type: application/json" \
@@ -314,6 +329,7 @@ curl -X POST http://localhost:3000/auth/register \
 ```
 
 **Login:**
+
 ```bash
 curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
@@ -324,12 +340,14 @@ curl -X POST http://localhost:3000/auth/login \
 ```
 
 **Get user profile (with token):**
+
 ```bash
 curl -X GET http://localhost:3000/users/<user-id> \
   -H "Authorization: Bearer <access_token>"
 ```
 
 **Get all roles:**
+
 ```bash
 curl -X GET http://localhost:3000/users/roles/all
 ```
@@ -360,6 +378,7 @@ AppModule
 ## 🔄 Authentication Flow
 
 ### Registration Flow
+
 ```
 1. Client sends POST /auth/register with credentials
 2. Controller validates DTO
@@ -371,6 +390,7 @@ AppModule
 ```
 
 ### Login Flow
+
 ```
 1. Client sends POST /auth/login with mobile + password
 2. Controller validates DTO
@@ -381,6 +401,7 @@ AppModule
 ```
 
 ### Protected Route Flow
+
 ```
 1. Client sends request with Authorization header
 2. JwtAuthGuard extracts token from header
@@ -396,21 +417,25 @@ AppModule
 ## 📚 Technology Stack
 
 ### Core Framework
+
 - **NestJS**: Progressive Node.js framework
 - **TypeScript**: Type-safe JavaScript
 - **Prisma**: Modern ORM for type-safe queries
 
 ### Authentication
+
 - **@nestjs/jwt**: JWT token handling
 - **@nestjs/passport**: Passport.js integration
 - **Passport-JWT**: JWT strategy for Passport
 - **Bcrypt**: Password hashing library
 
 ### Validation
+
 - **class-validator**: DTO validation decorators
 - **class-transformer**: Object transformation
 
 ### Database
+
 - **PostgreSQL**: Production database
 - **Prisma Client**: Type-safe ORM client
 
@@ -419,29 +444,34 @@ AppModule
 ## 🎯 What's Included
 
 ✅ **Complete Auth Module**
+
 - Registration with validation
 - Login with JWT
 - Password hashing
 - Role management
 
 ✅ **Complete Users Module**
+
 - User profile retrieval
 - User lookup functions
 - Role queries
 
 ✅ **Infrastructure**
+
 - Prisma database integration
 - Configuration management
 - JWT strategy & guard
 - Global validation
 
 ✅ **Security**
+
 - Password hashing
 - JWT authentication
 - Request validation
 - Error handling
 
 ✅ **Documentation**
+
 - Comprehensive implementation guide
 - API endpoint examples
 - Architecture diagrams
@@ -468,24 +498,28 @@ AppModule
 ## 🎓 Key Concepts
 
 ### JWT (JSON Web Tokens)
+
 - Stateless authentication
 - Compact URL-safe representation
 - Contains claims (sub, mobile_number, role)
 - 24-hour expiry for security
 
 ### Bcrypt
+
 - One-way password hashing
 - Prevents rainbow table attacks
 - Salt rounds prevent timing attacks
 - Industry standard for password security
 
 ### Passport.js
+
 - Authentication middleware for Node.js
 - Strategy pattern for different auth methods
 - JWT strategy validates token and loads user
 - Guards protect routes from unauthorized access
 
 ### Prisma ORM
+
 - Type-safe database queries
 - Automatic migration management
 - Built-in validation
@@ -498,16 +532,19 @@ AppModule
 ### Common Issues
 
 **"Token expired" error:**
+
 - Check system clock synchronization
 - Verify JWT_EXPIRES_IN value
 - Default: 86400 seconds (24 hours)
 
 **"Invalid signature" error:**
+
 - Ensure JWT_SECRET matches
 - Verify no token tampering
 - Check secret in both sign and verify
 
 **"User not found" error:**
+
 - Verify user exists in database
 - Check mobile_number spelling
 - Run seed script to create roles

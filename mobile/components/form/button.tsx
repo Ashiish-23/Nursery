@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   TouchableOpacity,
   Text,
@@ -7,16 +7,16 @@ import {
   ActivityIndicator,
   ViewStyle,
   TextStyle,
-} from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+} from "react-native";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
 interface ButtonProps {
   onPress: () => void;
   title: string;
   loading?: boolean;
   disabled?: boolean;
-  variant?: 'primary' | 'secondary' | 'danger';
-  size?: 'sm' | 'md' | 'lg';
+  variant?: "primary" | "secondary" | "danger";
+  size?: "sm" | "md" | "lg";
   style?: ViewStyle;
   textStyle?: TextStyle;
 }
@@ -26,13 +26,13 @@ export const Button: React.FC<ButtonProps> = ({
   title,
   loading = false,
   disabled = false,
-  variant = 'primary',
-  size = 'md',
+  variant = "primary",
+  size = "md",
   style,
   textStyle,
 }) => {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
   const styles = createStyles(colors);
 
   const isDisabled = disabled || loading;
@@ -51,7 +51,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === 'secondary' ? colors.primary : '#FFFFFF'}
+          color={variant === "secondary" ? colors.primary : "#FFFFFF"}
           size="small"
         />
       ) : (
@@ -74,9 +74,9 @@ function createStyles(colors: any) {
   return StyleSheet.create({
     button: {
       borderRadius: BorderRadius.md,
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'row',
+      alignItems: "center",
+      justifyContent: "center",
+      flexDirection: "row",
     },
     button_primary: {
       backgroundColor: colors.primary,
@@ -105,17 +105,17 @@ function createStyles(colors: any) {
       opacity: 0.5,
     },
     buttonText: {
-      fontWeight: '600',
-      textAlign: 'center',
+      fontWeight: "600",
+      textAlign: "center",
     },
     buttonText_primary: {
-      color: '#FFFFFF',
+      color: "#FFFFFF",
     },
     buttonText_secondary: {
       color: colors.primary,
     },
     buttonText_danger: {
-      color: '#FFFFFF',
+      color: "#FFFFFF",
     },
     buttonText_sm: {
       fontSize: 14,

@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
@@ -6,11 +6,16 @@ import { LoginDto } from './dto/login.dto';
 
 /**
  * AuthService
- * 
  * Handles authentication logic
  * Manages user registration and login
  * Generates JWT tokens
  */
+
+interface JwtPayload {
+  sub: string;
+  mobile_number: string;
+  role: string;
+}
 @Injectable()
 export class AuthService {
   constructor(
@@ -102,7 +107,7 @@ export class AuthService {
   /**
    * Validate JWT token and get user
    */
-  async validateToken(payload: any) {
+  async validateToken(payload: JwtPayload) {
     return this.usersService.findById(payload.sub);
   }
 }

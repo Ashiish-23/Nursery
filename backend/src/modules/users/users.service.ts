@@ -1,10 +1,13 @@
-import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  NotFoundException,
+} from '@nestjs/common';
 import { PrismaService } from '../../core/database/prisma.service';
 import * as bcrypt from 'bcrypt';
 
 /**
  * UsersService
- * 
  * Manages user-related database operations
  * Handles user creation, retrieval, and validation
  */
@@ -95,7 +98,10 @@ export class UsersService {
   /**
    * Verify password
    */
-  async verifyPassword(password: string, password_hash: string): Promise<boolean> {
+  async verifyPassword(
+    password: string,
+    password_hash: string,
+  ): Promise<boolean> {
     return bcrypt.compare(password, password_hash);
   }
 

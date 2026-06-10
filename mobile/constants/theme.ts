@@ -3,27 +3,27 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-import { Platform } from 'react-native';
+import { Platform } from "react-native";
 
 // Plant Marketplace Primary Colors
-const primaryGreen = '#2D5F3F';
-const primaryGreenLight = '#4A7C5E';
-const primaryGreenLighter = '#E8F5E9';
-const accentGreen = '#66BB6A';
-const errorRed = '#EF5350';
-const warningOrange = '#FFA726';
-const successGreen = '#66BB6A';
+const primaryGreen = "#2D5F3F";
+const primaryGreenLight = "#4A7C5E";
+const primaryGreenLighter = "#E8F5E9";
+const accentGreen = "#66BB6A";
+const errorRed = "#EF5350";
+const warningOrange = "#FFA726";
+const successGreen = "#66BB6A";
 
 const tintColorLight = primaryGreen;
-const tintColorDark = '#66BB6A';
+const tintColorDark = "#66BB6A";
 
 export const Colors = {
   light: {
-    text: '#11181C',
-    background: '#FFFFFF',
+    text: "#11181C",
+    background: "#FFFFFF",
     tint: tintColorLight,
-    icon: '#687076',
-    tabIconDefault: '#687076',
+    icon: "#687076",
+    tabIconDefault: "#687076",
     tabIconSelected: tintColorLight,
     primary: primaryGreen,
     primaryLight: primaryGreenLight,
@@ -32,16 +32,16 @@ export const Colors = {
     error: errorRed,
     warning: warningOrange,
     success: successGreen,
-    border: '#E0E0E0',
-    placeholder: '#BDBDBD',
-    surface: '#F5F5F5',
+    border: "#E0E0E0",
+    placeholder: "#BDBDBD",
+    surface: "#F5F5F5",
   },
   dark: {
-    text: '#ECEDEE',
-    background: '#151718',
+    text: "#ECEDEE",
+    background: "#151718",
     tint: tintColorDark,
-    icon: '#9BA1A6',
-    tabIconDefault: '#9BA1A6',
+    icon: "#9BA1A6",
+    tabIconDefault: "#9BA1A6",
     tabIconSelected: tintColorDark,
     primary: primaryGreen,
     primaryLight: primaryGreenLight,
@@ -50,33 +50,34 @@ export const Colors = {
     error: errorRed,
     warning: warningOrange,
     success: successGreen,
-    border: '#424242',
-    placeholder: '#757575',
-    surface: '#262626',
+    border: "#424242",
+    placeholder: "#757575",
+    surface: "#262626",
   },
 };
 
 export const Fonts = Platform.select({
   ios: {
     /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
+    sans: "system-ui",
     /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
+    serif: "ui-serif",
     /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
+    rounded: "ui-rounded",
     /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
+    mono: "ui-monospace",
   },
   default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
+    sans: "normal",
+    serif: "serif",
+    rounded: "normal",
+    mono: "monospace",
   },
   web: {
     sans: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
     serif: "Georgia, 'Times New Roman', serif",
-    rounded: "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
+    rounded:
+      "'SF Pro Rounded', 'Hiragino Maru Gothic ProN', Meiryo, 'MS PGothic', sans-serif",
     mono: "Menlo, Monaco, 'Courier New', monospace",
   },
 });

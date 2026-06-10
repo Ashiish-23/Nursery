@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   ScrollView,
@@ -6,56 +6,54 @@ import {
   useColorScheme,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useRouter } from 'expo-router';
-import { TextInput } from '@/components/form/text-input';
-import { Button } from '@/components/form/button';
-import { RoleSelection, UserRole } from '@/components/form/role-selection';
-import { Alert, AlertType } from '@/components/form/alert';
-import { Colors, Spacing } from '@/constants/theme';
-import { authApi } from '@/services/api';
-import { authStorage } from '@/services/auth-storage';
+} from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "expo-router";
+import { TextInput } from "@/components/form/text-input";
+import { Button } from "@/components/form/button";
+import { RoleSelection, UserRole } from "@/components/form/role-selection";
+import { Alert, AlertType } from "@/components/form/alert";
+import { Colors, Spacing } from "@/constants/theme";
+import { authApi } from "@/services/api";
+import { authStorage } from "@/services/auth-storage";
 
 // Validation schema
 const registerSchema = z
   .object({
     fullName: z
       .string()
-      .min(2, 'Full name must be at least 2 characters')
-      .max(100, 'Full name must be less than 100 characters'),
-    mobileNumber: z
-      .string()
-      .regex(/^[6-9]\d{9}$/, 'Invalid mobile number'),
+      .min(2, "Full name must be at least 2 characters")
+      .max(100, "Full name must be less than 100 characters"),
+    mobileNumber: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
     email: z
       .string()
-      .email('Invalid email format')
+      .email("Invalid email format")
       .optional()
-      .or(z.literal('')),
+      .or(z.literal("")),
     password: z
       .string()
-      .min(8, 'Password must be at least 8 characters')
-      .regex(/[A-Z]/, 'Password must contain uppercase letter')
-      .regex(/[a-z]/, 'Password must contain lowercase letter')
-      .regex(/[0-9]/, 'Password must contain number'),
+      .min(8, "Password must be at least 8 characters")
+      .regex(/[A-Z]/, "Password must contain uppercase letter")
+      .regex(/[a-z]/, "Password must contain lowercase letter")
+      .regex(/[0-9]/, "Password must contain number"),
     confirmPassword: z.string(),
-    role: z.enum(['B2C_BUYER', 'B2B_BUYER', 'NURSERY_SELLER'] as const),
+    role: z.enum(["B2C_BUYER", "B2B_BUYER", "NURSERY_SELLER"] as const),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match',
-    path: ['confirmPassword'],
+    message: "Passwords do not match",
+    path: ["confirmPassword"],
   });
 
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
   const styles = createStyles(colors);
   const router = useRouter();
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<{
     type: AlertType;
@@ -70,12 +68,12 @@ export default function RegisterScreen() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      fullName: '',
-      mobileNumber: '',
-      email: '',
-      password: '',
-      confirmPassword: '',
-      role: 'B2C_BUYER',
+      fullName: "",
+      mobileNumber: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      role: "B2C_BUYER",
     },
   });
 
@@ -101,24 +99,24 @@ export default function RegisterScreen() {
       }
 
       setAlert({
-        type: 'success',
-        title: 'Registration Successful',
-        message: 'Welcome to SasyaVana!',
+        type: "success",
+        title: "Registration Successful",
+        message: "Welcome to SasyaVana!",
       });
 
       // Navigate to home after brief delay
       setTimeout(() => {
-        router.replace('/');
+        router.replace("/");
       }, 1500);
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
-        'Registration failed. Please try again.';
-      
+        "Registration failed. Please try again.";
+
       setAlert({
-        type: 'error',
-        title: 'Registration Failed',
+        type: "error",
+        title: "Registration Failed",
         message: errorMessage,
       });
     } finally {
@@ -128,7 +126,7 @@ export default function RegisterScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <ScrollView
@@ -264,7 +262,7 @@ export default function RegisterScreen() {
             {/* Login Link */}
             <View style={styles.loginLinkContainer}>
               <Button
-                onPress={() => router.replace('/login')}
+                onPress={() => router.replace("/login")}
                 title="Already have an account? Login"
                 variant="secondary"
                 disabled={isLoading}
@@ -282,7 +280,7 @@ export default function RegisterScreen() {
           message={alert.message}
           visible={!!alert}
           onDismiss={() => {
-            if (alert.type !== 'success') {
+            if (alert.type !== "success") {
               setAlert(null);
             }
           }}
@@ -307,7 +305,7 @@ function createStyles(colors: any) {
       paddingHorizontal: Spacing.lg,
     },
     header: {
-      alignItems: 'center',
+      alignItems: "center",
       marginBottom: Spacing.xl,
     },
     plantIcon: {
@@ -315,15 +313,15 @@ function createStyles(colors: any) {
       height: 60,
       borderRadius: 30,
       backgroundColor: colors.primaryLighter,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
     leaf: {
       width: 30,
       height: 30,
       backgroundColor: colors.primary,
       borderRadius: 15,
-      transform: [{ rotate: '45deg' }],
+      transform: [{ rotate: "45deg" }],
     },
     form: {
       flex: 1,

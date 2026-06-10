@@ -10,7 +10,7 @@ export interface User {
   updatedAt?: string;
 }
 
-export type UserRole = 'B2C_BUYER' | 'B2B_BUYER' | 'NURSERY_SELLER';
+export type UserRole = "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
 
 export interface RegisterRequest {
   fullName: string;

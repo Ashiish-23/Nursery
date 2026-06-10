@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   TextInput as RNTextInput,
   TextInputProps as RNTextInputProps,
@@ -6,8 +6,8 @@ import {
   Text,
   StyleSheet,
   useColorScheme,
-} from 'react-native';
-import { Colors, Spacing, BorderRadius } from '@/constants/theme';
+} from "react-native";
+import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
 interface TextInputProps extends RNTextInputProps {
   label?: string;
@@ -17,8 +17,8 @@ interface TextInputProps extends RNTextInputProps {
 
 export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
   ({ label, error, required, style, ...props }, ref) => {
-    const colorScheme = useColorScheme() ?? 'light';
-    const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+    const colorScheme = useColorScheme() ?? "light";
+    const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
     const styles = createStyles(colors);
 
     return (
@@ -31,28 +31,24 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
         )}
         <RNTextInput
           ref={ref}
-          style={[
-            styles.input,
-            error && styles.inputError,
-            style,
-          ]}
+          style={[styles.input, error && styles.inputError, style]}
           placeholderTextColor={colors.placeholder}
           {...props}
         />
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
     );
-  }
+  },
 );
 
-TextInput.displayName = 'TextInput';
+TextInput.displayName = "TextInput";
 
 interface SelectOptionProps {
   label: string;
   value: string;
 }
 
-interface SelectProps extends Omit<RNTextInputProps, 'value'> {
+interface SelectProps extends Omit<RNTextInputProps, "value"> {
   label?: string;
   error?: string;
   required?: boolean;
@@ -62,9 +58,12 @@ interface SelectProps extends Omit<RNTextInputProps, 'value'> {
 }
 
 export const Select = React.forwardRef<RNTextInput, SelectProps>(
-  ({ label, error, required, options, value, onValueChange, style, ...props }, ref) => {
-    const colorScheme = useColorScheme() ?? 'light';
-    const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  (
+    { label, error, required, options, value, onValueChange, style, ...props },
+    ref,
+  ) => {
+    const colorScheme = useColorScheme() ?? "light";
+    const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
     const styles = createStyles(colors);
 
     return (
@@ -77,11 +76,7 @@ export const Select = React.forwardRef<RNTextInput, SelectProps>(
         )}
         <RNTextInput
           ref={ref}
-          style={[
-            styles.input,
-            error && styles.inputError,
-            style,
-          ]}
+          style={[styles.input, error && styles.inputError, style]}
           placeholderTextColor={colors.placeholder}
           value={value}
           editable={false}
@@ -90,10 +85,10 @@ export const Select = React.forwardRef<RNTextInput, SelectProps>(
         {error && <Text style={styles.errorText}>{error}</Text>}
       </View>
     );
-  }
+  },
 );
 
-Select.displayName = 'Select';
+Select.displayName = "Select";
 
 function createStyles(colors: any) {
   return StyleSheet.create({
@@ -102,7 +97,7 @@ function createStyles(colors: any) {
     },
     label: {
       fontSize: 14,
-      fontWeight: '600',
+      fontWeight: "600",
       color: colors.text,
       marginBottom: Spacing.sm,
     },
@@ -126,7 +121,7 @@ function createStyles(colors: any) {
       fontSize: 12,
       color: colors.error,
       marginTop: Spacing.sm,
-      fontWeight: '500',
+      fontWeight: "500",
     },
   });
 }

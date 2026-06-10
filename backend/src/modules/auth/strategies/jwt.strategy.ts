@@ -4,9 +4,14 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '../../../core/config/config.service';
 import { UsersService } from '../../users/users.service';
 
+interface JwtPayload {
+  sub: string;
+  mobile_number: string;
+  role: string;
+}
+
 /**
  * JwtStrategy
- * 
  * Passport strategy for JWT authentication
  * Validates and extracts JWT tokens from requests
  */
@@ -23,11 +28,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
+  async validate(payload: JwtPayload) {
     const user = await this.usersService.findById(payload.sub);
+
     if (!user) {
       return null;
     }
-    return { userId: payload.sub, mobileNumber: payload.mobile_number, role: payload.role };
+
+    return {
+      userId: payload.sub,
+      mobileNumber: payload.mobile_number,
+      role: payload.role,
+    };
   }
 }

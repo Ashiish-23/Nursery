@@ -26,6 +26,7 @@ npm run start:prod
 ### Authentication Endpoints (Public)
 
 #### 1. Register New User
+
 ```http
 POST /auth/register
 Content-Type: application/json
@@ -53,6 +54,7 @@ Response: 201 Created
 ```
 
 **Validation Rules:**
+
 - `full_name`: Required, non-empty string
 - `mobile_number`: Required, unique, string
 - `email`: Optional, unique if provided, valid email format
@@ -60,6 +62,7 @@ Response: 201 Created
 - `role`: Required, one of: B2C_BUYER, B2B_BUYER, NURSERY_SELLER
 
 **Error Responses:**
+
 - 400: Mobile number already registered
 - 400: Email already registered
 - 400: Invalid email format
@@ -69,6 +72,7 @@ Response: 201 Created
 ---
 
 #### 2. Login User
+
 ```http
 POST /auth/login
 Content-Type: application/json
@@ -93,6 +97,7 @@ Response: 200 OK
 ```
 
 **Error Responses:**
+
 - 401: Invalid mobile number or password
 - 400: Missing required fields
 
@@ -101,6 +106,7 @@ Response: 200 OK
 ### Users Endpoints
 
 #### 1. Get User Profile (Protected)
+
 ```http
 GET /users/550e8400-e29b-41d4-a716-446655440000
 Authorization: Bearer eyJhbGc...
@@ -122,12 +128,14 @@ Response: 200 OK
 ```
 
 **Error Responses:**
+
 - 401: Unauthorized (missing or invalid token)
 - 404: User not found
 
 ---
 
 #### 2. Get All Roles (Public)
+
 ```http
 GET /users/roles/all
 
@@ -156,6 +164,7 @@ Response: 200 OK
 ## 🔐 Authentication
 
 ### JWT Token Format
+
 - **Algorithm**: HS256
 - **Expiry**: 24 hours (86400 seconds)
 - **Header**: `Authorization: Bearer <token>`
@@ -164,12 +173,14 @@ Response: 200 OK
 ### How to Use Token
 
 **Option 1: Authorization Header**
+
 ```bash
 curl -X GET http://localhost:3000/users/user-id \
   -H "Authorization: Bearer eyJhbGc..."
 ```
 
 **Option 2: Using cURL with token variable**
+
 ```bash
 TOKEN="eyJhbGc..."
 curl -X GET http://localhost:3000/users/user-id \
@@ -181,6 +192,7 @@ curl -X GET http://localhost:3000/users/user-id \
 ## 🔍 Testing Examples
 
 ### Register a New User
+
 ```bash
 curl -X POST http://localhost:3000/auth/register \
   -H "Content-Type: application/json" \
@@ -194,6 +206,7 @@ curl -X POST http://localhost:3000/auth/register \
 ```
 
 ### Login and Save Token
+
 ```bash
 # Login and extract token
 RESPONSE=$(curl -s -X POST http://localhost:3000/auth/login \
@@ -208,12 +221,14 @@ echo "Token: $TOKEN"
 ```
 
 ### Get User Profile with Token
+
 ```bash
 curl -X GET http://localhost:3000/users/550e8400-e29b-41d4-a716-446655440000 \
   -H "Authorization: Bearer $TOKEN"
 ```
 
 ### Get Available Roles
+
 ```bash
 curl -X GET http://localhost:3000/users/roles/all
 ```
@@ -222,20 +237,20 @@ curl -X GET http://localhost:3000/users/roles/all
 
 ## 📁 Key Files Location
 
-| Category | File Path | Purpose |
-|----------|-----------|---------|
-| **Auth Service** | `src/modules/auth/auth.service.ts` | Registration & Login logic |
-| **Auth Controller** | `src/modules/auth/auth.controller.ts` | Auth endpoints |
-| **JWT Strategy** | `src/modules/auth/strategies/jwt.strategy.ts` | Token validation |
-| **Auth Guard** | `src/modules/auth/guards/jwt-auth.guard.ts` | Route protection |
-| **Auth DTOs** | `src/modules/auth/dto/` | Request/Response schemas |
-| **Users Service** | `src/modules/users/users.service.ts` | User operations |
-| **Users Controller** | `src/modules/users/users.controller.ts` | User endpoints |
-| **Prisma Service** | `src/core/database/prisma.service.ts` | Database access |
-| **Config Service** | `src/core/config/config.service.ts` | Environment config |
-| **Decorators** | `src/common/decorators/` | Custom decorators |
-| **Database Seed** | `prisma/seed.ts` | Role initialization |
-| **Environment** | `.env` | Configuration variables |
+| Category             | File Path                                     | Purpose                    |
+| -------------------- | --------------------------------------------- | -------------------------- |
+| **Auth Service**     | `src/modules/auth/auth.service.ts`            | Registration & Login logic |
+| **Auth Controller**  | `src/modules/auth/auth.controller.ts`         | Auth endpoints             |
+| **JWT Strategy**     | `src/modules/auth/strategies/jwt.strategy.ts` | Token validation           |
+| **Auth Guard**       | `src/modules/auth/guards/jwt-auth.guard.ts`   | Route protection           |
+| **Auth DTOs**        | `src/modules/auth/dto/`                       | Request/Response schemas   |
+| **Users Service**    | `src/modules/users/users.service.ts`          | User operations            |
+| **Users Controller** | `src/modules/users/users.controller.ts`       | User endpoints             |
+| **Prisma Service**   | `src/core/database/prisma.service.ts`         | Database access            |
+| **Config Service**   | `src/core/config/config.service.ts`           | Environment config         |
+| **Decorators**       | `src/common/decorators/`                      | Custom decorators          |
+| **Database Seed**    | `prisma/seed.ts`                              | Role initialization        |
+| **Environment**      | `.env`                                        | Configuration variables    |
 
 ---
 
@@ -262,11 +277,11 @@ UPLOAD_FOLDER="./uploads"
 
 ## 🔑 Available Roles
 
-| Role | Description | Use Case |
-|------|-------------|----------|
-| **B2C_BUYER** | Individual retail buyer | End consumers buying plants |
-| **B2B_BUYER** | Business bulk buyer | Companies/landscapers buying in bulk |
-| **NURSERY_SELLER** | Nursery owner/seller | Nurseries selling plants |
+| Role               | Description             | Use Case                             |
+| ------------------ | ----------------------- | ------------------------------------ |
+| **B2C_BUYER**      | Individual retail buyer | End consumers buying plants          |
+| **B2B_BUYER**      | Business bulk buyer     | Companies/landscapers buying in bulk |
+| **NURSERY_SELLER** | Nursery owner/seller    | Nurseries selling plants             |
 
 ---
 
@@ -309,6 +324,7 @@ npm run lint
 ## 🔄 Common Workflows
 
 ### 1. Register and Login
+
 ```bash
 # Step 1: Register
 RESPONSE=$(curl -s -X POST http://localhost:3000/auth/register \
@@ -332,6 +348,7 @@ curl -X GET http://localhost:3000/users/$USER_ID \
 ```
 
 ### 2. Test All Endpoints
+
 ```bash
 # 1. Get available roles
 echo "=== Get Roles ==="
@@ -355,27 +372,36 @@ curl -X POST http://localhost:3000/auth/login \
 ## 🐛 Troubleshooting
 
 ### Issue: "Cannot find module"
+
 **Solution**: Run `npm install` to install dependencies
 
 ### Issue: "Connection refused" (Database)
-**Solution**: 
+
+**Solution**:
+
 - Ensure PostgreSQL is running
 - Check DATABASE_URL in .env
 - Verify database credentials
 
 ### Issue: "Invalid token"
+
 **Solution**:
+
 - Verify JWT_SECRET matches in .env
 - Check token hasn't expired (24 hours)
 - Ensure token format: "Bearer <token>"
 
 ### Issue: "Mobile number already registered"
+
 **Solution**:
+
 - Use a different mobile number
 - Or login with existing credentials
 
 ### Issue: Application doesn't start
+
 **Solution**:
+
 ```bash
 # Clean and rebuild
 rm -rf dist/
@@ -388,6 +414,7 @@ npm start
 ## 📊 Database Schema Quick View
 
 ### roles table
+
 ```sql
 id (UUID, PK)
 role_name (VARCHAR, UNIQUE)
@@ -395,6 +422,7 @@ description (TEXT)
 ```
 
 ### users table
+
 ```sql
 id (UUID, PK)
 full_name (VARCHAR, NOT NULL)
@@ -458,20 +486,25 @@ Before deploying to production:
 ## 🎓 Learning Resources
 
 ### JWT (JSON Web Tokens)
+
 - https://jwt.io/
 - https://tools.ietf.org/html/rfc7519
 
 ### Bcrypt
+
 - https://bcrypt.online/ (for testing)
 - Documentation: bcrypt npm package
 
 ### NestJS
+
 - https://docs.nestjs.com/
 
 ### Prisma ORM
+
 - https://www.prisma.io/docs/
 
 ### Passport.js
+
 - https://www.passportjs.org/
 
 ---

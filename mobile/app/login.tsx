@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   ScrollView,
@@ -6,36 +6,32 @@ import {
   useColorScheme,
   KeyboardAvoidingView,
   Platform,
-} from 'react-native';
-import { useForm, Controller } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
-import { useRouter } from 'expo-router';
-import { TextInput } from '@/components/form/text-input';
-import { Button } from '@/components/form/button';
-import { Alert, AlertType } from '@/components/form/alert';
-import { Colors, Spacing } from '@/constants/theme';
-import { authApi } from '@/services/api';
-import { authStorage } from '@/services/auth-storage';
+} from "react-native";
+import { useForm, Controller } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { z } from "zod";
+import { useRouter } from "expo-router";
+import { TextInput } from "@/components/form/text-input";
+import { Button } from "@/components/form/button";
+import { Alert, AlertType } from "@/components/form/alert";
+import { Colors, Spacing } from "@/constants/theme";
+import { authApi } from "@/services/api";
+import { authStorage } from "@/services/auth-storage";
 
 // Validation schema
 const loginSchema = z.object({
-  mobileNumber: z
-    .string()
-    .regex(/^[6-9]\d{9}$/, 'Invalid mobile number'),
-  password: z
-    .string()
-    .min(1, 'Password is required'),
+  mobileNumber: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
+  password: z.string().min(1, "Password is required"),
 });
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginScreen() {
-  const colorScheme = useColorScheme() ?? 'light';
-  const colors = Colors[colorScheme === 'dark' ? 'dark' : 'light'];
+  const colorScheme = useColorScheme() ?? "light";
+  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
   const styles = createStyles(colors);
   const router = useRouter();
-  
+
   const [isLoading, setIsLoading] = useState(false);
   const [alert, setAlert] = useState<{
     type: AlertType;
@@ -50,8 +46,8 @@ export default function LoginScreen() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      mobileNumber: '',
-      password: '',
+      mobileNumber: "",
+      password: "",
     },
   });
 
@@ -74,24 +70,24 @@ export default function LoginScreen() {
       }
 
       setAlert({
-        type: 'success',
-        title: 'Login Successful',
-        message: 'Welcome back to SasyaVana!',
+        type: "success",
+        title: "Login Successful",
+        message: "Welcome back to SasyaVana!",
       });
 
       // Navigate to home after brief delay
       setTimeout(() => {
-        router.replace('/');
+        router.replace("/");
       }, 1500);
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message ||
         error.message ||
-        'Login failed. Please try again.';
-      
+        "Login failed. Please try again.";
+
       setAlert({
-        type: 'error',
-        title: 'Login Failed',
+        type: "error",
+        title: "Login Failed",
         message: errorMessage,
       });
     } finally {
@@ -101,7 +97,7 @@ export default function LoginScreen() {
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
       <ScrollView
@@ -174,7 +170,7 @@ export default function LoginScreen() {
             {/* Register Link */}
             <View style={styles.registerLinkContainer}>
               <Button
-                onPress={() => router.replace('/register')}
+                onPress={() => router.replace("/register")}
                 title="Don't have an account? Register"
                 variant="secondary"
                 disabled={isLoading}
@@ -186,9 +182,10 @@ export default function LoginScreen() {
               <Button
                 onPress={() => {
                   setAlert({
-                    type: 'info',
-                    title: 'Coming Soon',
-                    message: 'Password recovery feature will be available soon.',
+                    type: "info",
+                    title: "Coming Soon",
+                    message:
+                      "Password recovery feature will be available soon.",
                   });
                 }}
                 title="Forgot Password?"
@@ -208,7 +205,7 @@ export default function LoginScreen() {
           message={alert.message}
           visible={!!alert}
           onDismiss={() => {
-            if (alert.type !== 'success') {
+            if (alert.type !== "success") {
               setAlert(null);
             }
           }}
@@ -233,7 +230,7 @@ function createStyles(colors: any) {
       paddingHorizontal: Spacing.lg,
     },
     header: {
-      alignItems: 'center',
+      alignItems: "center",
       marginBottom: Spacing.xl,
     },
     plantIcon: {
@@ -241,19 +238,19 @@ function createStyles(colors: any) {
       height: 80,
       borderRadius: 40,
       backgroundColor: colors.primaryLighter,
-      justifyContent: 'center',
-      alignItems: 'center',
+      justifyContent: "center",
+      alignItems: "center",
     },
     leaf: {
       width: 40,
       height: 40,
       backgroundColor: colors.primary,
       borderRadius: 20,
-      transform: [{ rotate: '45deg' }],
+      transform: [{ rotate: "45deg" }],
     },
     titleContainer: {
       marginBottom: Spacing.xl,
-      alignItems: 'center',
+      alignItems: "center",
     },
     titleUnderline: {
       width: 40,

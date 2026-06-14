@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   View,
   Text,
@@ -38,6 +38,16 @@ export const Alert: React.FC<AlertProps> = ({
   const styles = createStyles(colors);
   const [animatedValue] = useState(new Animated.Value(0));
 
+  const handleDismiss = useCallback(() => {
+    Animated.timing(animatedValue, {
+      toValue: 0,
+      duration: 300,
+      useNativeDriver: false,
+    }).start(() => {
+      onDismiss?.();
+    });
+  }, [animatedValue, onDismiss]);
+
   useEffect(() => {
     if (visible) {
       Animated.timing(animatedValue, {
@@ -52,17 +62,7 @@ export const Alert: React.FC<AlertProps> = ({
 
       return () => clearTimeout(timer);
     }
-  }, [visible, duration, animatedValue]);
-
-  const handleDismiss = () => {
-    Animated.timing(animatedValue, {
-      toValue: 0,
-      duration: 300,
-      useNativeDriver: false,
-    }).start(() => {
-      onDismiss?.();
-    });
-  };
+  }, [visible, duration, handleDismiss]);
 
   if (!visible) return null;
 

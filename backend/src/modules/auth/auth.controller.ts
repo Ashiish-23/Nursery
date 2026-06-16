@@ -1,9 +1,15 @@
-import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Post,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
 import { Public } from '../../common/decorators/public.decorator';
-
 /**
  * AuthController
  * Handles authentication endpoints
@@ -18,6 +24,12 @@ export class AuthController {
    * @param registerDto Registration data including full_name, mobile_number, email, password, role
    * @returns JWT token and user information
    */
+  @Public()
+  @Get('ping')
+  ping() {
+    return { message: 'Auth service is up and running' };
+  }
+
   @Public()
   @Post('register')
   @HttpCode(HttpStatus.CREATED)

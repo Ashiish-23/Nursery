@@ -3,8 +3,8 @@
 export interface User {
   id: string;
   email?: string;
-  mobileNumber: string;
-  fullName: string;
+  mobile_number: string;
+  full_name: string;
   role: UserRole;
   createdAt?: string;
   updatedAt?: string;
@@ -13,21 +13,21 @@ export interface User {
 export type UserRole = "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
 
 export interface RegisterRequest {
-  fullName: string;
-  mobileNumber: string;
+  full_name: string;
+  mobile_number: string;
   email?: string;
   password: string;
   role: UserRole;
 }
 
 export interface LoginRequest {
-  mobileNumber: string;
+  mobile_number: string;
   password: string;
 }
 
 export interface AuthResponse {
-  accessToken: string;
-  refreshToken?: string;
+  access_token: string;
+  refresh_token?: string;
   user: User;
 }
 

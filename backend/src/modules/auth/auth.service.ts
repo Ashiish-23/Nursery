@@ -66,31 +66,27 @@ export class AuthService {
    */
   async login(loginDto: LoginDto) {
     const { mobile_number, password } = loginDto;
-
-    // Find user by mobile number
+    console.log('LOGIN MOBILE:', mobile_number);
     const user = await this.usersService.findByMobileNumber(mobile_number);
-
+    console.log('USER FOUND:', !!user);
     if (!user) {
       throw new UnauthorizedException('Invalid mobile number or password');
     }
-
-    // Verify password
+    console.log('DB MOBILE:', user.mobile_number);
+    console.log('HASH EXISTS:', !!user.password_hash);
     const isPasswordValid = await this.usersService.verifyPassword(
       password,
       user.password_hash,
     );
-
+    console.log('PASSWORD VALID:', isPasswordValid);
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid mobile number or password');
     }
-
-    // Generate JWT token
     const access_token = this.jwtService.sign({
       sub: user.id,
       mobile_number: user.mobile_number,
       role: user.roles.role_name,
     });
-
     return {
       access_token,
       user: {
@@ -103,10 +99,6 @@ export class AuthService {
       },
     };
   }
-
-  /**
-   * Validate JWT token and get user
-   */
   async validateToken(payload: JwtPayload) {
     return this.usersService.findById(payload.sub);
   }

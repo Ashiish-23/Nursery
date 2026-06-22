@@ -20,7 +20,7 @@ import { authStorage } from "@/services/auth-storage";
 
 // Validation schema
 const loginSchema = z.object({
-  mobileNumber: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
+  mobile_number: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
   password: z.string().min(1, "Password is required"),
 });
 
@@ -46,7 +46,7 @@ export default function LoginScreen() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      mobileNumber: "",
+      mobile_number: "",
       password: "",
     },
   });
@@ -55,13 +55,13 @@ export default function LoginScreen() {
     setIsLoading(true);
     try {
       const response = await authApi.login({
-        mobileNumber: data.mobileNumber,
+        mobile_number: data.mobile_number,
         password: data.password,
       });
 
       // Store JWT token
-      if (response.accessToken) {
-        await authStorage.saveToken(response.accessToken);
+      if (response.access_token) {
+        await authStorage.saveToken(response.access_token);
       }
 
       // Store user info
@@ -122,7 +122,7 @@ export default function LoginScreen() {
             {/* Mobile Number */}
             <Controller
               control={control}
-              name="mobileNumber"
+              name="mobile_number"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   label="Mobile Number"
@@ -131,7 +131,7 @@ export default function LoginScreen() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   keyboardType="phone-pad"
-                  error={errors.mobileNumber?.message}
+                  error={errors.mobile_number?.message}
                   editable={!isLoading}
                   required
                 />

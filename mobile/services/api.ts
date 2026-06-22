@@ -4,6 +4,7 @@ import { authStorage } from "./auth-storage";
 // API Configuration
 const API_BASE_URL =
   process.env.EXPO_PUBLIC_API_URL || "http://10.41.110.104:3000";
+  console.log('API_BASE_URL:', API_BASE_URL);
 
 export const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,
@@ -50,8 +51,8 @@ api.interceptors.response.use(
 // API Methods
 export const authApi = {
   register: async (data: {
-    fullName: string;
-    mobileNumber: string;
+    full_name: string;
+    mobile_number: string;
     email?: string;
     password: string;
     role: "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
@@ -60,7 +61,7 @@ export const authApi = {
     return response.data;
   },
 
-  login: async (data: { mobileNumber: string; password: string }) => {
+  login: async (data: { mobile_number: string; password: string }) => {
     const response = await api.post("/auth/login", data);
     return response.data;
   },

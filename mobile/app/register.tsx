@@ -22,11 +22,11 @@ import { authStorage } from "@/services/auth-storage";
 // Validation schema
 const registerSchema = z
   .object({
-    fullName: z
+    full_name: z
       .string()
       .min(2, "Full name must be at least 2 characters")
       .max(100, "Full name must be less than 100 characters"),
-    mobileNumber: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
+    mobile_number: z.string().regex(/^[6-9]\d{9}$/, "Invalid mobile number"),
     email: z
       .string()
       .email("Invalid email format")
@@ -68,8 +68,8 @@ export default function RegisterScreen() {
   } = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      fullName: "",
-      mobileNumber: "",
+      full_name: "",
+      mobile_number: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -81,16 +81,16 @@ export default function RegisterScreen() {
     setIsLoading(true);
     try {
       const response = await authApi.register({
-        fullName: data.fullName,
-        mobileNumber: data.mobileNumber,
+        full_name: data.full_name,
+        mobile_number: data.mobile_number,
         email: data.email || undefined,
         password: data.password,
         role: data.role,
       });
 
       // Store JWT token
-      if (response.accessToken) {
-        await authStorage.saveToken(response.accessToken);
+      if (response.access_token) {
+        await authStorage.saveToken(response.access_token);
       }
 
       // Store user info
@@ -146,7 +146,7 @@ export default function RegisterScreen() {
             {/* Full Name */}
             <Controller
               control={control}
-              name="fullName"
+              name="full_name"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   label="Full Name"
@@ -154,7 +154,7 @@ export default function RegisterScreen() {
                   value={value}
                   onChangeText={onChange}
                   onBlur={onBlur}
-                  error={errors.fullName?.message}
+                  error={errors.full_name?.message}
                   editable={!isLoading}
                   required
                 />
@@ -164,7 +164,7 @@ export default function RegisterScreen() {
             {/* Mobile Number */}
             <Controller
               control={control}
-              name="mobileNumber"
+              name="mobile_number"
               render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   label="Mobile Number"
@@ -173,7 +173,7 @@ export default function RegisterScreen() {
                   onChangeText={onChange}
                   onBlur={onBlur}
                   keyboardType="phone-pad"
-                  error={errors.mobileNumber?.message}
+                  error={errors.mobile_number?.message}
                   editable={!isLoading}
                   required
                 />

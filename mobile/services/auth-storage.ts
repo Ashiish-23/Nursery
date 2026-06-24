@@ -4,12 +4,13 @@ import { Platform } from 'react-native';
 const TOKEN_KEY = 'sasyavana_access_token';
 const USER_KEY = 'sasyavana_user';
 
-interface User {
+export interface User {
   id: string;
+  full_name: string;
+  mobile_number: string;
   email?: string;
-  mobileNumber: string;
-  fullName: string;
-  role: 'B2C_BUYER' | 'B2B_BUYER' | 'NURSERY_SELLER';
+  role: string;
+  account_status: string;
 }
 
 export const authStorage = {

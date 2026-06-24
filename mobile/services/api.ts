@@ -76,6 +76,10 @@ export const authApi = {
     // Always clear local storage
     await authStorage.clearAll();
   },
+  profile: async () => {
+    const response = await api.get('/auth/profile');
+    return response.data;
+  },
 };
 
 export default api;

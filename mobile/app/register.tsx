@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import {
   View,
+  Text,
   ScrollView,
   StyleSheet,
-  useColorScheme,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
@@ -49,8 +49,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function RegisterScreen() {
-  const colorScheme = useColorScheme() ?? "light";
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
+  const colors = Colors.light;
   const styles = createStyles(colors);
   const router = useRouter();
 
@@ -106,7 +105,7 @@ export default function RegisterScreen() {
 
       // Navigate to home after brief delay
       setTimeout(() => {
-        router.replace("/");
+        router.replace('/dashboard');
       }, 1500);
     } catch (error: any) {
       const errorMessage =
@@ -136,9 +135,8 @@ export default function RegisterScreen() {
         <View style={styles.content}>
           {/* Header */}
           <View style={styles.header}>
-            <View style={styles.plantIcon}>
-              <View style={styles.leaf} />
-            </View>
+            <Text style={styles.appTitle}>SasyaVana</Text>
+            <Text style={styles.subtitle}>Create your account</Text>
           </View>
 
           {/* Form */}
@@ -302,26 +300,26 @@ function createStyles(colors: any) {
     },
     content: {
       flex: 1,
-      paddingHorizontal: Spacing.lg,
+      width: '100%',
+      maxWidth: 550,
+      alignSelf: 'center',
+      paddingHorizontal: 24,
     },
     header: {
-      alignItems: "center",
-      marginBottom: Spacing.xl,
+      alignItems: 'center',
+      marginTop: 30,
+      marginBottom: 40,
     },
-    plantIcon: {
-      width: 60,
-      height: 60,
-      borderRadius: 30,
-      backgroundColor: colors.primaryLighter,
-      justifyContent: "center",
-      alignItems: "center",
+    appTitle: {
+      fontSize: 32,
+      fontWeight: '700',
+      color: '#166534',
+      marginBottom: 8,
     },
-    leaf: {
-      width: 30,
-      height: 30,
-      backgroundColor: colors.primary,
-      borderRadius: 15,
-      transform: [{ rotate: "45deg" }],
+    subtitle: {
+      fontSize: 16,
+      color: '#666',
+      marginBottom: 8,
     },
     form: {
       flex: 1,

@@ -1,22 +1,22 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
+  Text,
   ScrollView,
   StyleSheet,
-  useColorScheme,
   KeyboardAvoidingView,
   Platform,
 } from "react-native";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { useAuth } from '@/contexts/auth-context';
 import { useRouter } from "expo-router";
 import { TextInput } from "@/components/form/text-input";
 import { Button } from "@/components/form/button";
 import { Alert, AlertType } from "@/components/form/alert";
 import { Colors, Spacing } from "@/constants/theme";
 import { authApi } from "@/services/api";
-import { authStorage } from "@/services/auth-storage";
 
 // Validation schema
 const loginSchema = z.object({
@@ -27,8 +27,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function LoginScreen() {
-  const colorScheme = useColorScheme() ?? "light";
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
+  const colors = Colors.light;
   const styles = createStyles(colors);
   const router = useRouter();
 
@@ -51,49 +50,54 @@ export default function LoginScreen() {
     },
   });
 
-  const onSubmit = async (data: LoginFormData) => {
-    setIsLoading(true);
-    try {
-      const response = await authApi.login({
-        mobile_number: data.mobile_number,
-        password: data.password,
-      });
+  const { login, isAuthenticated } = useAuth();
 
-      // Store JWT token
-      if (response.access_token) {
-        await authStorage.saveToken(response.access_token);
-      }
+useEffect(() => {
+  if (isAuthenticated) {
+    router.replace('/dashboard');
+  }
+}, [isAuthenticated, router]);
 
-      // Store user info
-      if (response.user) {
-        await authStorage.saveUser(response.user);
-      }
+const onSubmit = async (data: LoginFormData) => {
+  setIsLoading(true);
 
-      setAlert({
-        type: "success",
-        title: "Login Successful",
-        message: "Welcome back to SasyaVana!",
-      });
+  try {
+    const response = await authApi.login({
+      mobile_number: data.mobile_number,
+      password: data.password,
+    });
 
-      // Navigate to home after brief delay
-      setTimeout(() => {
-        router.replace("/");
-      }, 1500);
-    } catch (error: any) {
-      const errorMessage =
-        error.response?.data?.message ||
-        error.message ||
-        "Login failed. Please try again.";
-
-      setAlert({
-        type: "error",
-        title: "Login Failed",
-        message: errorMessage,
-      });
-    } finally {
-      setIsLoading(false);
+    if (response.access_token && response.user) {
+      await login(
+        response.user,
+        response.access_token,
+      );
     }
-  };
+
+    setAlert({
+      type: 'success',
+      title: 'Login Successful',
+      message: 'Welcome back to SasyaVana!',
+    });
+
+    setTimeout(() => {
+      router.replace('/dashboard');
+    }, 1000);
+  } catch (error: any) {
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      'Login failed. Please try again.';
+
+    setAlert({
+      type: 'error',
+      title: 'Login Failed',
+      message: errorMessage,
+    });
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <KeyboardAvoidingView
@@ -107,14 +111,8 @@ export default function LoginScreen() {
         <View style={styles.content}>
           {/* Header */}
           <View style={styles.header}>
-            <View style={styles.plantIcon}>
-              <View style={styles.leaf} />
-            </View>
-          </View>
-
-          {/* Title */}
-          <View style={styles.titleContainer}>
-            <View style={styles.titleUnderline} />
+            <Text style={styles.appTitle}>SasyaVana</Text>
+            <Text style={styles.subtitle}>Login to continue</Text>
           </View>
 
           {/* Form */}
@@ -226,38 +224,29 @@ function createStyles(colors: any) {
       paddingVertical: Spacing.xl,
     },
     content: {
-      flex: 1,
-      paddingHorizontal: Spacing.lg,
-    },
+  flex: 1,
+  width: '100%',
+  maxWidth: 500,
+  alignSelf: 'center',
+  paddingHorizontal: 24,
+},
     header: {
-      alignItems: "center",
-      marginBottom: Spacing.xl,
-    },
-    plantIcon: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-      backgroundColor: colors.primaryLighter,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    leaf: {
-      width: 40,
-      height: 40,
-      backgroundColor: colors.primary,
-      borderRadius: 20,
-      transform: [{ rotate: "45deg" }],
-    },
-    titleContainer: {
-      marginBottom: Spacing.xl,
-      alignItems: "center",
-    },
-    titleUnderline: {
-      width: 40,
-      height: 3,
-      backgroundColor: colors.primary,
-      borderRadius: 2,
-    },
+  alignItems: 'center',
+  marginBottom: 40,
+  marginTop: 30,
+},
+
+appTitle: {
+  fontSize: 32,
+  fontWeight: '700',
+  color: '#166534',
+  marginBottom: 8,
+},
+
+subtitle: {
+  fontSize: 16,
+  color: '#666',
+},
     form: {
       flex: 1,
       marginTop: Spacing.lg,

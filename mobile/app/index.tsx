@@ -1,39 +1,27 @@
-import { Link } from "expo-router";
-import { View, Text, StyleSheet } from "react-native";
+import { useEffect } from 'react';
+import { useRouter } from 'expo-router';
 
-export default function HomeScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>SasyaVana</Text>
+import { useAuth } from '@/contexts/auth-context';
 
-      <Link href="/login" style={styles.link}>
-        Login
-      </Link>
+export default function Index() {
+  const router = useRouter();
 
-      <Text>{"\n"}</Text>
+  const {
+    loading,
+    isAuthenticated,
+  } = useAuth();
 
-      <Link href="/register" style={styles.link}>
-        Register
-      </Link>
-    </View>
-  );
+  useEffect(() => {
+    if (loading) {
+      return;
+    }
+
+    if (isAuthenticated) {
+      router.replace('/dashboard');
+    } else {
+      router.replace('/login');
+    }
+  }, [loading, isAuthenticated]);
+
+  return null;
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#ffffff",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#000000",
-    marginBottom: 30,
-  },
-  link: {
-    color: "blue",
-    fontSize: 18,
-  },
-});

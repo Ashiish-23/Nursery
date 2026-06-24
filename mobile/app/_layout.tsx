@@ -1,19 +1,18 @@
-import { Stack } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import "react-native-reanimated";
+import { Stack } from 'expo-router';
+import { StatusBar } from 'expo-status-bar';
+import 'react-native-reanimated';
+import { AuthProvider } from '@/contexts/auth-context';
 
 export default function RootLayout() {
   return (
-    <>
+    <AuthProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
-
-        <Stack.Screen name="login" options={{ title: "Login" }} />
-
-        <Stack.Screen name="register" options={{ title: "Register" }} />
+        <Stack.Screen name="login" options={{ title: 'Login' }} />
+        <Stack.Screen name="register" options={{ headerShown: false, }} />
+        <Stack.Screen name="dashboard" options={{ headerShown: false }} />
       </Stack>
-
       <StatusBar style="auto" />
-    </>
+    </AuthProvider>
   );
 }

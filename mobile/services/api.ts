@@ -3,8 +3,7 @@ import { authStorage } from "./auth-storage";
 
 // API Configuration
 const API_BASE_URL =
-  process.env.EXPO_PUBLIC_API_URL || "http://10.41.110.104:3000";
-  console.log('API_BASE_URL:', API_BASE_URL);
+  process.env.EXPO_PUBLIC_API_URL || "http://10.242.114.148:3000";
 
 export const api: AxiosInstance = axios.create({
   baseURL: API_BASE_URL,

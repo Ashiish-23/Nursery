@@ -4,11 +4,12 @@ import {
   Text,
   TouchableOpacity,
   StyleSheet,
-  useColorScheme,
 } from "react-native";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
-export type UserRole = "B2C_BUYER" | "B2B_BUYER" | "NURSERY_SELLER";
+export type UserRole =
+  | "B2C_BUYER"
+  | "B2B_BUYER"
+  | "NURSERY_SELLER";
 
 interface RoleOption {
   value: UserRole;
@@ -45,116 +46,135 @@ export const RoleSelection: React.FC<RoleSelectionProps> = ({
   onSelectRole,
   error,
 }) => {
-  const colorScheme = useColorScheme() ?? "light";
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
-  const styles = createStyles(colors);
-
   return (
     <View style={styles.container}>
       <Text style={styles.label}>
         Role <Text style={styles.required}>*</Text>
       </Text>
+
       <View style={styles.optionsContainer}>
         {ROLE_OPTIONS.map((option) => (
           <TouchableOpacity
             key={option.value}
             style={[
               styles.option,
-              selectedRole === option.value && styles.optionSelected,
+              selectedRole === option.value &&
+                styles.optionSelected,
             ]}
             onPress={() => onSelectRole(option.value)}
           >
             <View
               style={[
                 styles.radio,
-                selectedRole === option.value && styles.radioSelected,
+                selectedRole === option.value &&
+                  styles.radioSelected,
               ]}
             >
               {selectedRole === option.value && (
                 <View style={styles.radioDot} />
               )}
             </View>
+
             <View style={styles.optionContent}>
-              <Text style={styles.optionLabel}>{option.label}</Text>
-              <Text style={styles.optionDescription}>{option.description}</Text>
+              <Text style={styles.optionLabel}>
+                {option.label}
+              </Text>
+
+              <Text style={styles.optionDescription}>
+                {option.description}
+              </Text>
             </View>
           </TouchableOpacity>
         ))}
       </View>
-      {error && <Text style={styles.errorText}>{error}</Text>}
+
+      {error && (
+        <Text style={styles.errorText}>
+          {error}
+        </Text>
+      )}
     </View>
   );
 };
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
-    container: {
-      marginBottom: Spacing.lg,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: colors.text,
-      marginBottom: Spacing.md,
-    },
-    required: {
-      color: colors.error,
-    },
-    optionsContainer: {
-      gap: Spacing.md,
-    },
-    option: {
-      flexDirection: "row",
-      alignItems: "flex-start",
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: BorderRadius.md,
-      padding: Spacing.md,
-      backgroundColor: colors.surface,
-    },
-    optionSelected: {
-      borderColor: colors.primary,
-      backgroundColor: colors.primaryLighter,
-    },
-    radio: {
-      width: 20,
-      height: 20,
-      borderRadius: 10,
-      borderWidth: 2,
-      borderColor: colors.border,
-      marginRight: Spacing.md,
-      marginTop: 2,
-      justifyContent: "center",
-      alignItems: "center",
-    },
-    radioSelected: {
-      borderColor: colors.primary,
-      backgroundColor: colors.primary,
-    },
-    radioDot: {
-      width: 8,
-      height: 8,
-      borderRadius: 4,
-      backgroundColor: "#FFFFFF",
-    },
-    optionContent: {
-      flex: 1,
-    },
-    optionLabel: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: colors.text,
-      marginBottom: Spacing.xs,
-    },
-    optionDescription: {
-      fontSize: 12,
-      color: colors.placeholder,
-    },
-    errorText: {
-      fontSize: 12,
-      color: colors.error,
-      marginTop: Spacing.md,
-      fontWeight: "500",
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 20,
+  },
+
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 10,
+  },
+
+  required: {
+    color: "#DC2626",
+  },
+
+  optionsContainer: {
+    gap: 12,
+  },
+
+  option: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 16,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    borderRadius: 10,
+    backgroundColor: "#FFFFFF",
+  },
+
+  optionSelected: {
+    borderColor: "#166534",
+    backgroundColor: "#ECFDF5",
+  },
+
+  radio: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "#D1D5DB",
+    justifyContent: "center",
+    alignItems: "center",
+    marginRight: 12,
+  },
+
+  radioSelected: {
+    borderColor: "#166534",
+    backgroundColor: "#166534",
+  },
+
+  radioDot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: "#FFFFFF",
+  },
+
+  optionContent: {
+    flex: 1,
+  },
+
+  optionLabel: {
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#111827",
+  },
+
+  optionDescription: {
+    marginTop: 2,
+    fontSize: 12,
+    color: "#6B7280",
+  },
+
+  errorText: {
+    marginTop: 8,
+    fontSize: 12,
+    color: "#DC2626",
+    fontWeight: "500",
+  },
+});

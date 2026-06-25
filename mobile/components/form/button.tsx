@@ -3,12 +3,10 @@ import {
   TouchableOpacity,
   Text,
   StyleSheet,
-  useColorScheme,
   ActivityIndicator,
   ViewStyle,
   TextStyle,
 } from "react-native";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
 
 interface ButtonProps {
   onPress: () => void;
@@ -31,10 +29,6 @@ export const Button: React.FC<ButtonProps> = ({
   style,
   textStyle,
 }) => {
-  const colorScheme = useColorScheme() ?? "light";
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
-  const styles = createStyles(colors);
-
   const isDisabled = disabled || loading;
 
   return (
@@ -51,7 +45,7 @@ export const Button: React.FC<ButtonProps> = ({
     >
       {loading ? (
         <ActivityIndicator
-          color={variant === "secondary" ? colors.primary : "#FFFFFF"}
+          color={variant === "secondary" ? "#166534" : "#FFFFFF"}
           size="small"
         />
       ) : (
@@ -70,61 +64,73 @@ export const Button: React.FC<ButtonProps> = ({
   );
 };
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
-    button: {
-      borderRadius: BorderRadius.md,
-      alignItems: "center",
-      justifyContent: "center",
-      flexDirection: "row",
-    },
-    button_primary: {
-      backgroundColor: colors.primary,
-    },
-    button_secondary: {
-      backgroundColor: colors.surface,
-      borderWidth: 1,
-      borderColor: colors.border,
-    },
-    button_danger: {
-      backgroundColor: colors.error,
-    },
-    button_sm: {
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.sm,
-    },
-    button_md: {
-      paddingHorizontal: Spacing.lg,
-      paddingVertical: Spacing.md,
-    },
-    button_lg: {
-      paddingHorizontal: Spacing.xl,
-      paddingVertical: Spacing.lg,
-    },
-    buttonDisabled: {
-      opacity: 0.5,
-    },
-    buttonText: {
-      fontWeight: "600",
-      textAlign: "center",
-    },
-    buttonText_primary: {
-      color: "#FFFFFF",
-    },
-    buttonText_secondary: {
-      color: colors.primary,
-    },
-    buttonText_danger: {
-      color: "#FFFFFF",
-    },
-    buttonText_sm: {
-      fontSize: 14,
-    },
-    buttonText_md: {
-      fontSize: 16,
-    },
-    buttonText_lg: {
-      fontSize: 18,
-    },
-  });
-}
+const styles = StyleSheet.create({
+  button: {
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+  },
+
+  button_primary: {
+    backgroundColor: "#166534",
+  },
+
+  button_secondary: {
+    backgroundColor: "#F9FAFB",
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+  },
+
+  button_danger: {
+    backgroundColor: "#DC2626",
+  },
+
+  button_sm: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
+  },
+
+  button_md: {
+    paddingHorizontal: 20,
+    paddingVertical: 12,
+  },
+
+  button_lg: {
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+  },
+
+  buttonDisabled: {
+    opacity: 0.5,
+  },
+
+  buttonText: {
+    fontWeight: "600",
+    textAlign: "center",
+  },
+
+  buttonText_primary: {
+    color: "#FFFFFF",
+  },
+
+  buttonText_secondary: {
+    color: "#166534",
+  },
+
+  buttonText_danger: {
+    color: "#FFFFFF",
+  },
+
+  buttonText_sm: {
+    fontSize: 14,
+  },
+
+  buttonText_md: {
+    fontSize: 16,
+  },
+
+  buttonText_lg: {
+    fontSize: 18,
+  },
+});

@@ -5,9 +5,7 @@ import {
   View,
   Text,
   StyleSheet,
-  useColorScheme,
-} from "react-native";
-import { Colors, Spacing, BorderRadius } from "@/constants/theme";
+  } from "react-native";
 
 interface TextInputProps extends RNTextInputProps {
   label?: string;
@@ -17,10 +15,6 @@ interface TextInputProps extends RNTextInputProps {
 
 export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
   ({ label, error, required, style, ...props }, ref) => {
-    const colorScheme = useColorScheme() ?? "light";
-    const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
-    const styles = createStyles(colors);
-
     return (
       <View style={styles.container}>
         {label && (
@@ -29,16 +23,26 @@ export const TextInput = React.forwardRef<RNTextInput, TextInputProps>(
             {required && <Text style={styles.required}> *</Text>}
           </Text>
         )}
+    
         <RNTextInput
           ref={ref}
-          style={[styles.input, error && styles.inputError, style]}
-          placeholderTextColor={colors.placeholder}
+          style={[
+            styles.input,
+            error ? styles.inputError : null,
+            style,
+          ]}
+          placeholderTextColor="#9CA3AF"
           {...props}
         />
-        {error && <Text style={styles.errorText}>{error}</Text>}
+
+        {error && (
+          <Text style={styles.errorText}>
+            {error}
+          </Text>
+        )}
       </View>
     );
-  },
+  }
 );
 
 TextInput.displayName = "TextInput";
@@ -48,7 +52,8 @@ interface SelectOptionProps {
   value: string;
 }
 
-interface SelectProps extends Omit<RNTextInputProps, "value"> {
+interface SelectProps
+  extends Omit<RNTextInputProps, "value"> {
   label?: string;
   error?: string;
   required?: boolean;
@@ -57,15 +62,21 @@ interface SelectProps extends Omit<RNTextInputProps, "value"> {
   onValueChange?: (value: string) => void;
 }
 
-export const Select = React.forwardRef<RNTextInput, SelectProps>(
+export const Select = React.forwardRef<
+  RNTextInput,
+  SelectProps
+>(
   (
-    { label, error, required, options, value, onValueChange, style, ...props },
-    ref,
+    {
+      label,
+      error,
+      required,
+      value,
+      style,
+      ...props
+    },
+    ref
   ) => {
-    const colorScheme = useColorScheme() ?? "light";
-    const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
-    const styles = createStyles(colors);
-
     return (
       <View style={styles.container}>
         {label && (
@@ -74,54 +85,67 @@ export const Select = React.forwardRef<RNTextInput, SelectProps>(
             {required && <Text style={styles.required}> *</Text>}
           </Text>
         )}
+
         <RNTextInput
           ref={ref}
-          style={[styles.input, error && styles.inputError, style]}
-          placeholderTextColor={colors.placeholder}
+          style={[
+            styles.input,
+            error ? styles.inputError : null,
+            style,
+          ]}
           value={value}
           editable={false}
+          placeholderTextColor="#9CA3AF"
           {...props}
         />
-        {error && <Text style={styles.errorText}>{error}</Text>}
+
+        {error && (
+          <Text style={styles.errorText}>
+            {error}
+          </Text>
+        )}
       </View>
     );
-  },
+  }
 );
 
 Select.displayName = "Select";
 
-function createStyles(colors: any) {
-  return StyleSheet.create({
-    container: {
-      marginBottom: Spacing.md,
-    },
-    label: {
-      fontSize: 14,
-      fontWeight: "600",
-      color: colors.text,
-      marginBottom: Spacing.sm,
-    },
-    required: {
-      color: colors.error,
-    },
-    input: {
-      borderWidth: 1,
-      borderColor: colors.border,
-      borderRadius: BorderRadius.md,
-      paddingHorizontal: Spacing.md,
-      paddingVertical: Spacing.md,
-      fontSize: 16,
-      color: colors.text,
-      backgroundColor: colors.surface,
-    },
-    inputError: {
-      borderColor: colors.error,
-    },
-    errorText: {
-      fontSize: 12,
-      color: colors.error,
-      marginTop: Spacing.sm,
-      fontWeight: "500",
-    },
-  });
-}
+const styles = StyleSheet.create({
+  container: {
+    marginBottom: 16,
+  },
+
+  label: {
+    fontSize: 14,
+    fontWeight: "600",
+    color: "#374151",
+    marginBottom: 6,
+  },
+
+  required: {
+    color: "#DC2626",
+  },
+
+  input: {
+    height: 52,
+    borderWidth: 1,
+    borderColor: "#D1D5DB",
+    borderRadius: 10,
+    paddingHorizontal: 16,
+    fontSize: 16,
+    color: "#111827",
+    backgroundColor: "#FFFFFF",
+  },
+
+  inputError: {
+    borderColor: "#DC2626",
+  },
+
+  errorText: {
+    marginTop: 4,
+    fontSize: 12,
+    color: "#DC2626",
+    fontWeight: "500",
+  },
+});

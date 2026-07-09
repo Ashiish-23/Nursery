@@ -1561,3 +1561,1473 @@ Engineering principles shall endure.
 ==============================================================================
 END OF CHAPTER 3
 ==============================================================================
+
+==============================================================================
+SasyaVana Engineering Constitution
+==============================================================================
+Part I — The Foundation
+
+Chapter 4
+Engineering Laws
+
+Document ID:
+SES-CON-004
+
+Version:
+1.0.0
+
+Status:
+DRAFT
+
+Document Type:
+Engineering Laws
+
+Authority Level:
+Constitutional
+
+Owner:
+SasyaVana Core Engineering
+
+Audience:
+
+• Software Architects
+• Software Engineers
+• Database Engineers
+• DevOps Engineers
+• QA Engineers
+• Technical Writers
+• Artificial Intelligence Contributors
+• Future Contributors
+
+Dependencies:
+
+SES-CON-001 — Engineering Constitution
+
+SES-CON-002 — Vision
+
+SES-CON-003 — Engineering Philosophy & Methodology
+
+Related Chapters:
+
+Chapter 1 — Engineering Constitution
+
+Chapter 2 — Vision
+
+Chapter 3 — Engineering Philosophy
+
+Chapter 5 — Ubiquitous Language
+
+Chapter 6 — Domain Architecture
+
+==============================================================================
+
+CONSTITUTIONAL PURPOSE
+
+==============================================================================
+
+This chapter defines the immutable engineering laws governing every
+engineering decision within the SasyaVana platform.
+
+Unlike the Engineering Philosophy, which establishes how engineers think,
+these laws establish what engineers SHALL and SHALL NOT do.
+
+Every engineering decision, implementation, review, and deployment shall
+comply with these laws.
+
+Violation of a constitutional law constitutes constitutional non-compliance
+and shall require architectural review before implementation may proceed.
+
+==============================================================================
+
+SCOPE
+
+==============================================================================
+
+This chapter governs:
+
+• Architectural integrity
+
+• Engineering process
+
+• Documentation obligations
+
+• Security obligations
+
+• Development practices
+
+• Software quality
+
+• Platform governance
+
+• Constitutional compliance
+
+==============================================================================
+
+TITLE I
+ARCHITECTURAL LAWS
+
+==============================================================================
+
+ENG-LAW-001
+
+Business Drives Architecture
+
+Classification
+
+MANDATORY
+
+Intent
+
+To ensure that business requirements remain the primary driver of
+architectural decisions.
+
+Constitutional Statement
+
+Business requirements SHALL define architecture.
+
+Architecture SHALL NOT be designed around frameworks,
+libraries, programming languages, or developer preferences.
+
+Rationale
+
+Software exists to solve business problems.
+
+Architecture that is technology-driven instead of business-driven
+becomes difficult to evolve and eventually fails to satisfy
+changing business requirements.
+
+Compliance Requirements
+
+• Every architectural decision shall reference a business requirement.
+
+• Architecture Decision Records (ADRs) shall document the business
+reason behind the decision.
+
+Violations
+
+✗ Choosing a database because it is popular.
+
+✗ Designing APIs around frontend limitations.
+
+✗ Selecting architecture before understanding business rules.
+
+Engineering Implications
+
+Every architectural discussion begins with business analysis.
+
+Related Constitution
+
+SES-CON-002
+
+SES-CON-003
+
+Exceptions
+
+None.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-002
+
+Architecture Drives Implementation
+
+Classification
+
+MANDATORY
+
+Intent
+
+To prevent implementation from redefining system architecture.
+
+Constitutional Statement
+
+Implementation SHALL follow approved architecture.
+
+Implementation SHALL NOT redefine architecture.
+
+Rationale
+
+Architecture provides stability.
+
+Allowing implementation to redefine architecture causes
+architectural drift and inconsistent software.
+
+Compliance Requirements
+
+• Engineering Specifications must exist before implementation.
+
+• Every module shall implement an approved design.
+
+Violations
+
+✗ Creating new database tables without architectural approval.
+
+✗ Introducing undocumented APIs.
+
+✗ Changing domain boundaries during coding.
+
+Engineering Implications
+
+Code is an implementation of architecture rather than
+a replacement for architecture.
+
+Related Constitution
+
+SES-CON-003
+
+Exceptions
+
+None.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-003
+
+Implementation Never Redefines Architecture
+
+Classification
+
+MANDATORY
+
+Intent
+
+To preserve long-term architectural integrity.
+
+Constitutional Statement
+
+Engineering challenges SHALL be solved within the approved architecture.
+
+Architectural changes require formal review rather than ad-hoc implementation.
+
+Rationale
+
+Short-term implementation decisions often become permanent architecture.
+
+Compliance Requirements
+
+• Architecture changes require ADR approval.
+
+• Major design changes require documentation updates.
+
+Violations
+
+✗ "We'll fix it later."
+
+✗ Temporary database structures becoming permanent.
+
+✗ Feature-driven architectural changes.
+
+Engineering Implications
+
+Implementation respects architecture.
+
+Architecture never follows implementation.
+
+Related Constitution
+
+SES-CON-001
+
+SES-CON-003
+
+Exceptions
+
+Emergency production mitigation may temporarily bypass this law,
+provided constitutional compliance is restored in the immediately
+following development cycle.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-004
+
+Single Source of Truth
+
+Classification
+
+MANDATORY
+
+Intent
+
+To eliminate conflicting business data.
+
+Constitutional Statement
+
+Every business concept SHALL have exactly one authoritative source
+of truth.
+
+Multiple sources of truth for the same business concept are prohibited.
+
+Rationale
+
+Duplicate authority leads to inconsistent software behaviour.
+
+Compliance Requirements
+
+Examples:
+
+• Inventory → Inventory Domain
+
+• Orders → Commerce Domain
+
+• Species → Platform Catalog
+
+• Authentication → Identity Domain
+
+• Permissions → Authorization Service
+
+Violations
+
+✗ Inventory stored in multiple tables.
+
+✗ Frontend maintaining business truth.
+
+✗ Duplicate business ownership.
+
+Engineering Implications
+
+Every domain owns its own data.
+
+Other domains consume services rather than directly modifying data.
+
+Related Constitution
+
+Chapter 6 — Domain Architecture
+
+Exceptions
+
+Read-only caches.
+
+Replicated search indexes.
+
+Analytics warehouses.
+
+==============================================================================
+
+TITLE II
+ENGINEERING PROCESS LAWS
+
+==============================================================================
+
+ENG-LAW-005
+
+Documentation Is Mandatory
+
+Classification
+
+MANDATORY
+
+Intent
+
+To preserve engineering knowledge.
+
+Constitutional Statement
+
+Engineering documentation SHALL exist before implementation begins
+and SHALL evolve together with implementation.
+
+Rationale
+
+Documentation preserves architectural knowledge beyond
+individual contributors.
+
+Compliance Requirements
+
+Every completed feature updates:
+
+• Architecture
+
+• Database
+
+• APIs
+
+• Completion Gates
+
+• Documentation
+
+Violations
+
+✗ Undocumented APIs.
+
+✗ Undocumented database changes.
+
+✗ Code without specifications.
+
+Engineering Implications
+
+Documentation is an engineering artifact.
+
+Related Constitution
+
+SES-CON-003
+
+Exceptions
+
+None.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-006
+
+One Completed Feature
+
+Classification
+
+MANDATORY
+
+Intent
+
+To ensure disciplined incremental development.
+
+Constitutional Statement
+
+A feature SHALL be fully completed before engineering effort
+moves to another feature.
+
+Rationale
+
+Parallel unfinished work increases technical debt
+and reduces software quality.
+
+Compliance Requirements
+
+Completion requires:
+
+• Design
+
+• Documentation
+
+• Backend
+
+• Frontend
+
+• Testing
+
+• Review
+
+• Completion Gate approval
+
+Violations
+
+✗ Multiple partially completed modules.
+
+✗ Skipping testing.
+
+✗ Delaying documentation.
+
+Engineering Implications
+
+Stable foundations precede expansion.
+
+Related Constitution
+
+SES-CON-003
+
+Exceptions
+
+Critical production issues.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-007
+
+No Temporary Hacks
+
+Classification
+
+MANDATORY
+
+Intent
+
+To prevent temporary solutions from becoming permanent architecture.
+
+Constitutional Statement
+
+Temporary implementations SHALL NOT become permanent software.
+
+Rationale
+
+Temporary code frequently becomes permanent technical debt.
+
+Compliance Requirements
+
+Temporary workarounds require:
+
+• Owner
+
+• Tracking issue
+
+• Removal plan
+
+Violations
+
+✗ TODO implementations remaining indefinitely.
+
+✗ Mock services becoming production services.
+
+✗ Hardcoded values entering production.
+
+Engineering Implications
+
+Solve root causes rather than symptoms.
+
+Related Constitution
+
+FRAMEWORK-001
+
+Exceptions
+
+Emergency production mitigation only.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-008
+
+Completion Gates Are Mandatory
+
+Classification
+
+MANDATORY
+
+Intent
+
+To ensure engineering consistency.
+
+Constitutional Statement
+
+No feature SHALL bypass Completion Gates.
+
+Rationale
+
+Completion Gates ensure consistent engineering quality.
+
+Compliance Requirements
+
+Every feature passes:
+
+• Design Review
+
+• Implementation Review
+
+• Testing
+
+• Documentation
+
+• Architecture Review
+
+Violations
+
+✗ Deploying incomplete features.
+
+✗ Skipping reviews.
+
+✗ Missing documentation.
+
+Engineering Implications
+
+Completion is verified rather than assumed.
+
+Related Constitution
+
+Completion Gates
+
+FRAMEWORK-001
+
+Exceptions
+
+None.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-009
+
+Release Readiness Is Mandatory
+
+Classification
+
+MANDATORY
+
+Intent
+
+To ensure production stability.
+
+Constitutional Statement
+
+Deployment SHALL occur only after successful Release Readiness Review.
+
+Rationale
+
+Successful implementation does not automatically imply
+production readiness.
+
+Compliance Requirements
+
+Release requires:
+
+• Passing GATE-001
+
+• Successful testing
+
+• Updated documentation
+
+• Security review
+
+• Performance validation
+
+• Approval through GATE-002
+
+Violations
+
+✗ Deploying directly after coding.
+
+✗ Missing Release Review.
+
+✗ Ignoring failed tests.
+
+Engineering Implications
+
+Engineering completion and production deployment
+are separate approvals.
+
+Related Constitution
+
+FRAMEWORK-001
+
+GATE-001
+
+GATE-002
+
+Exceptions
+
+Critical emergency hotfixes following emergency deployment procedures.
+
+==============================================================================
+
+END OF PART 1 of chapter 4
+==============================================================================
+==============================================================================
+TITLE III
+SOFTWARE QUALITY LAWS
+==============================================================================
+
+ENG-LAW-010
+
+Security Before Convenience
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+To ensure platform security is never compromised for convenience,
+speed, or development shortcuts.
+
+Constitutional Statement
+
+Security SHALL always take precedence over convenience.
+
+Engineering decisions SHALL NOT weaken authentication,
+authorization, encryption, auditing, or validation.
+
+Rationale
+
+Convenient software can be rewritten.
+
+Compromised software loses trust.
+
+Compliance Requirements
+
+• Authentication required for protected resources.
+
+• Authorization required for every protected action.
+
+• Sensitive information encrypted.
+
+• Security reviews mandatory.
+
+Violations
+
+✗ Disabling authentication for convenience.
+
+✗ Hardcoding secrets.
+
+✗ Skipping authorization.
+
+✗ Ignoring security validation.
+
+Engineering Implications
+
+Security is designed into the platform,
+not added afterward.
+
+Related Constitution
+
+SES-CON-003
+
+------------------------------------------------------------------------------
+
+ENG-LAW-011
+
+Never Trust Client Input
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+To establish the backend as the authoritative validator.
+
+Constitutional Statement
+
+The backend SHALL validate every request.
+
+The client SHALL NEVER be trusted.
+
+Rationale
+
+Client applications can be modified,
+tampered with,
+or bypassed.
+
+Compliance Requirements
+
+Validate:
+
+• Authentication
+
+• Authorization
+
+• DTO Validation
+
+• Business Rules
+
+• Database Constraints
+
+Violations
+
+✗ Frontend-only validation.
+
+✗ Client-controlled prices.
+
+✗ Client inventory updates.
+
+Engineering Implications
+
+Every request is treated as untrusted.
+
+Related Constitution
+
+Identity Domain
+
+Commerce Domain
+
+------------------------------------------------------------------------------
+
+ENG-LAW-012
+
+Explicit Over Implicit
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+To maximize readability and maintainability.
+
+Constitutional Statement
+
+Software SHALL prefer explicit behaviour over hidden behaviour.
+
+Rationale
+
+Explicit systems are easier to understand,
+review,
+test,
+and maintain.
+
+Compliance Requirements
+
+• Explicit naming.
+
+• Explicit validation.
+
+• Explicit state transitions.
+
+• Explicit dependency injection.
+
+Violations
+
+✗ Hidden side effects.
+
+✗ Implicit business rules.
+
+✗ Undocumented magic behaviour.
+
+Engineering Implications
+
+Engineers should never have to guess
+why software behaves a certain way.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-013
+
+Stable APIs
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+To ensure API evolution without breaking clients.
+
+Constitutional Statement
+
+Breaking API changes SHALL require architectural review.
+
+Rationale
+
+Stable APIs reduce integration failures.
+
+Compliance Requirements
+
+• API contracts documented.
+
+• Version breaking changes.
+
+• Deprecation policy followed.
+
+Violations
+
+✗ Silent breaking changes.
+
+✗ Undocumented endpoint modifications.
+
+Engineering Implications
+
+APIs become reliable long-term contracts.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-014
+
+Database Integrity
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+To preserve long-term integrity of business data.
+
+Constitutional Statement
+
+Business data SHALL remain internally consistent,
+auditable,
+and protected.
+
+Rationale
+
+Software may be rewritten.
+
+Business data cannot.
+
+Compliance Requirements
+
+• Foreign keys.
+
+• Constraints.
+
+• Transactions.
+
+• Immutable audit records.
+
+• Controlled migrations.
+
+Violations
+
+✗ Manual production updates.
+
+✗ Disabled constraints.
+
+✗ Orphaned records.
+
+Engineering Implications
+
+Database integrity outweighs implementation convenience.
+
+==============================================================================
+
+TITLE IV
+GOVERNANCE LAWS
+==============================================================================
+
+ENG-LAW-015
+
+Engineering Decisions Are Traceable
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+Every engineering decision shall be traceable to a documented source.
+
+Constitutional Statement
+
+No engineering decision SHALL exist without documented justification.
+
+Compliance Requirements
+
+Every implementation traces back to:
+
+• Business Requirement
+
+• ADR
+
+• Engineering Specification
+
+• Constitution
+
+Violations
+
+✗ "We thought it was better."
+
+✗ Undocumented architectural changes.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-016
+
+Every Feature Has Ownership
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+Every feature must have a responsible owner.
+
+Constitutional Statement
+
+Engineering ownership SHALL always be explicit.
+
+Compliance Requirements
+
+Each feature records:
+
+• Business owner
+
+• Technical owner
+
+• Documentation owner
+
+Violations
+
+✗ Anonymous code.
+
+✗ Abandoned modules.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-017
+
+Engineering Debt Is Managed
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+Technical debt must be intentional,
+visible,
+and managed.
+
+Constitutional Statement
+
+Undocumented engineering debt SHALL NOT exist.
+
+Compliance Requirements
+
+Debt requires:
+
+• Owner
+
+• Reason
+
+• Priority
+
+• Removal plan
+
+Violations
+
+✗ "We'll fix later."
+
+✗ Hidden debt.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-018
+
+No Silent Assumptions
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+Prevent undocumented engineering behaviour.
+
+Constitutional Statement
+
+If it is not documented,
+it SHALL NOT be assumed.
+
+Compliance Requirements
+
+Unknown behaviour requires clarification.
+
+AI SHALL request clarification rather than invent behaviour.
+
+Violations
+
+✗ Guessing business rules.
+
+✗ Inventing database fields.
+
+✗ Hidden assumptions.
+
+==============================================================================
+
+TITLE V
+PLATFORM LAWS
+==============================================================================
+
+ENG-LAW-019
+
+Immutable Auditability
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+Protect platform accountability.
+
+Constitutional Statement
+
+Important business operations SHALL remain permanently auditable.
+
+Compliance Requirements
+
+Audit:
+
+• Inventory
+
+• Orders
+
+• Payments
+
+• Verification
+
+• User actions
+
+Violations
+
+✗ Deleted audit logs.
+
+✗ Mutable history.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-020
+
+Platform Integrity Over Feature Velocity
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+Long-term platform integrity outweighs rapid feature delivery.
+
+Constitutional Statement
+
+No feature SHALL compromise platform integrity.
+
+Violations
+
+Architecture shortcuts.
+
+Security shortcuts.
+
+Database shortcuts.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-021
+
+AI Constitutional Compliance
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+AI contributors obey the Constitution.
+
+Constitutional Statement
+
+Artificial Intelligence SHALL follow
+approved architecture,
+business rules,
+and engineering specifications.
+
+AI SHALL NOT invent undocumented behaviour.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-022
+
+Single Responsibility Everywhere
+
+Classification
+
+MANDATORY
+
+Severity
+
+HIGH
+
+Intent
+
+Single Responsibility applies throughout the platform.
+
+Applies To
+
+• Documents
+
+• Domains
+
+• Modules
+
+• Services
+
+• Classes
+
+• Functions
+
+• Components
+
+------------------------------------------------------------------------------
+
+ENG-LAW-023
+
+Business Data Is Sacred
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+Business data must outlive software implementations.
+
+Constitutional Statement
+
+Business records SHALL preserve integrity,
+history,
+and traceability.
+
+Applies To
+
+• Orders
+
+• Payments
+
+• Inventory
+
+• RFQs
+
+• Audit Logs
+
+------------------------------------------------------------------------------
+
+ENG-LAW-024
+
+Constitutional Compliance
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+Every engineering activity obeys the Constitution.
+
+Constitutional Statement
+
+The Constitution overrides implementation preferences.
+
+No engineering decision may violate constitutional principles.
+
+------------------------------------------------------------------------------
+
+ENG-LAW-025
+
+Explicit State Transitions
+
+Classification
+
+MANDATORY
+
+Severity
+
+CRITICAL
+
+Intent
+
+Business entities SHALL transition only through approved state machines.
+
+Constitutional Statement
+
+Every lifecycle SHALL be represented by a documented finite state machine.
+
+State transitions SHALL be explicit,
+validated,
+and auditable.
+
+Direct transitions that bypass defined states are prohibited unless explicitly authorized by documented business rules.
+
+Compliance Requirements
+
+Every state machine shall define:
+
+• Valid states
+
+• Allowed transitions
+
+• Transition authority
+
+• Transition conditions
+
+• Audit requirements
+
+Applies To
+
+• User Accounts
+
+• Nursery Verification
+
+• Business Verification
+
+• Product Lifecycle
+
+• Inventory Reservation
+
+• Orders
+
+• Payments
+
+• RFQs
+
+• Notifications
+
+Violations
+
+✗ Arbitrary status updates.
+
+✗ Skipping verification states.
+
+✗ Direct database updates bypassing lifecycle validation.
+
+Engineering Implications
+
+State machines become the single source of truth for workflow progression.
+
+==============================================================================
+
+COMPLIANCE-001
+
+ENGINEERING COMPLIANCE CHECKLIST
+
+==============================================================================
+
+Every completed feature SHALL satisfy:
+
+✓ Constitution
+
+✓ Vision
+
+✓ Engineering Philosophy
+
+✓ Engineering Laws
+
+✓ Business Rules
+
+✓ Architecture
+
+✓ Engineering Specifications
+
+✓ Database
+
+✓ Backend
+
+✓ Frontend
+
+✓ Testing
+
+✓ Documentation
+
+✓ Security Review
+
+✓ Performance Review
+
+✓ GATE-001
+
+✓ GATE-002
+
+==============================================================================
+
+ENGINEERING LAW STATEMENTS
+
+==============================================================================
+
+LAW-STATEMENT-001
+
+Business always drives engineering.
+
+LAW-STATEMENT-002
+
+Architecture always precedes implementation.
+
+LAW-STATEMENT-003
+
+Documentation is mandatory.
+
+LAW-STATEMENT-004
+
+Backend remains the source of truth.
+
+LAW-STATEMENT-005
+
+Platform integrity outweighs feature velocity.
+
+LAW-STATEMENT-006
+
+Security is never optional.
+
+LAW-STATEMENT-007
+
+Every engineering decision is traceable.
+
+LAW-STATEMENT-008
+
+Every workflow is governed by explicit state machines.
+
+LAW-STATEMENT-009
+
+Artificial Intelligence follows the Constitution.
+
+LAW-STATEMENT-010
+
+Engineering excellence is measured by long-term maintainability rather than short-term delivery.
+
+==============================================================================
+
+ENGINEERING DECLARATION
+
+==============================================================================
+
+Engineering laws exist to preserve the integrity,
+security,
+maintainability,
+and longevity of the SasyaVana platform.
+
+Innovation is encouraged.
+
+Creativity is encouraged.
+
+Experimentation is encouraged.
+
+However,
+
+No innovation,
+implementation,
+or optimization shall compromise the constitutional principles upon which the platform is built.
+
+Every contributor shares responsibility for protecting these laws.
+
+Technology evolves.
+
+Engineering laws endure.
+
+==============================================================================
+END OF CHAPTER 4
+==============================================================================

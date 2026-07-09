@@ -247,10 +247,10 @@ model rfqs {
 }
 
 model roles {
-  id          String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  role_name   String    @unique @db.VarChar(50)
+  id          String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  role_name   user_role_enum @unique
   description String?
-  created_at  DateTime? @default(now()) @db.Timestamp(6)
+  created_at  DateTime?      @default(now()) @db.Timestamp(6)
   users       users[]
 }
 
@@ -290,7 +290,8 @@ model users {
   password_hash          String
   role_id                String                   @db.Uuid
   account_status         account_status_enum      @default(ACTIVE)
-  verification_status    verification_status_enum @default(NOT_REQUIRED)
+  onboarding_status      onboarding_status_enum   @default(NOT_STARTED)
+  token_version          Int                      @default(1)
   mobile_verified        Boolean?                 @default(false)
   email_verified         Boolean?                 @default(false)
   profile_image_url      String?
@@ -327,8 +328,22 @@ model wishlist_items {
 enum account_status_enum {
   ACTIVE
   SUSPENDED
-  BANNED
   DEACTIVATED
+  ARCHIVED
+}
+
+enum onboarding_status_enum {
+  NOT_STARTED
+  PROFILE_INCOMPLETE
+  PENDING_VERIFICATION
+  COMPLETED
+}
+
+enum user_role_enum {
+  CUSTOMER
+  NURSERY_OWNER
+  BUSINESS
+  ADMIN
 }
 
 enum inventory_transaction_type {
@@ -356,10 +371,3 @@ enum rfq_status {
   CANCELLED
 }
 
-enum verification_status_enum {
-  NOT_REQUIRED
-  PENDING
-  UNDER_REVIEW
-  APPROVED
-  REJECTED
-}

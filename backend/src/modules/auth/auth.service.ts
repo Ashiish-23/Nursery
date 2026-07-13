@@ -16,6 +16,7 @@ interface JwtPayload {
   mobile_number: string;
   role: string;
 }
+
 @Injectable()
 export class AuthService {
   constructor(
@@ -24,12 +25,39 @@ export class AuthService {
   ) {}
 
   /**
+   * Generate JWT Access Token
+   * Centralized token generation for consistency.
+   */
+  private generateAccessToken(user: {
+    id: string;
+    mobile_number: string;
+    role: string;
+  }): string {
+    return this.jwtService.sign({
+      sub: user.id,
+      mobile_number: user.mobile_number,
+      role: user.role,
+    });
+  }
+
+  /**
+   * Validate whether the account is allowed to authenticate.
+   */
+  private validateAccountStatus(accountStatus: string): void {
+    if (accountStatus !== 'ACTIVE') {
+      throw new UnauthorizedException(
+        'Your account is not active. Please contact support.',
+      );
+    }
+  }
+
+  /**
    * Register a new user
    */
   async register(registerDto: RegisterDto) {
     const { full_name, mobile_number, email, password, role } = registerDto;
 
-    // Get role ID
+    // Get role information
     const roleData = await this.usersService.getRoleByName(role);
 
     // Create user
@@ -41,9 +69,12 @@ export class AuthService {
       roleData.id,
     );
 
-    // Generate JWT token
-    const access_token = this.jwtService.sign({
-      sub: user.id,
+    // Validate account status before issuing JWT
+    this.validateAccountStatus(user.account_status);
+
+    // Generate JWT
+    const access_token = this.generateAccessToken({
+      id: user.id,
       mobile_number: user.mobile_number,
       role: roleData.role_name,
     });
@@ -66,27 +97,32 @@ export class AuthService {
    */
   async login(loginDto: LoginDto) {
     const { mobile_number, password } = loginDto;
-    console.log('LOGIN MOBILE:', mobile_number);
+
     const user = await this.usersService.findByMobileNumber(mobile_number);
-    console.log('USER FOUND:', !!user);
+
     if (!user) {
       throw new UnauthorizedException('Invalid mobile number or password');
     }
-    console.log('DB MOBILE:', user.mobile_number);
-    console.log('HASH EXISTS:', !!user.password_hash);
+
     const isPasswordValid = await this.usersService.verifyPassword(
       password,
       user.password_hash,
     );
-    console.log('PASSWORD VALID:', isPasswordValid);
+
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid mobile number or password');
     }
-    const access_token = this.jwtService.sign({
-      sub: user.id,
+
+    // Validate account status before issuing JWT
+    this.validateAccountStatus(user.account_status);
+
+    // Generate JWT
+    const access_token = this.generateAccessToken({
+      id: user.id,
       mobile_number: user.mobile_number,
       role: user.roles.role_name,
     });
+
     return {
       access_token,
       user: {
@@ -99,6 +135,10 @@ export class AuthService {
       },
     };
   }
+
+  /**
+   * Validate JWT payload
+   */
   async validateToken(payload: JwtPayload) {
     return this.usersService.findById(payload.sub);
   }

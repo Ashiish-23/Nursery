@@ -10,11 +10,11 @@ import {
 } from 'class-validator';
 
 import {
-  GrowthRate,
-  PlantType,
-  SpeciesStatus,
-  SunlightRequirement,
-  WaterRequirement,
+  growth_rate as GrowthRate,
+  plant_type as PlantType,
+  species_status as SpeciesStatus,
+  sunlight_requirement as SunlightRequirement,
+  water_requirement as WaterRequirement,
 } from '@prisma/client';
 
 /**
@@ -37,7 +37,7 @@ export class CreateSpeciesDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  scientific_name: string;
+  scientific_name!: string;
 
   /**
    * Botanical genus
@@ -63,7 +63,7 @@ export class CreateSpeciesDto {
   @IsString()
   @IsNotEmpty()
   @MaxLength(255)
-  name_english: string;
+  name_english!: string;
 
   /**
    * Kannada display name
@@ -86,25 +86,25 @@ export class CreateSpeciesDto {
    * Plant Type
    */
   @IsEnum(PlantType)
-  plant_type: PlantType;
+  plant_type!: PlantType;
 
   /**
    * Sunlight Requirement
    */
   @IsEnum(SunlightRequirement)
-  sunlight_requirement: SunlightRequirement;
+  sunlight_requirement!: SunlightRequirement;
 
   /**
    * Water Requirement
    */
   @IsEnum(WaterRequirement)
-  water_requirement: WaterRequirement;
+  water_requirement!: WaterRequirement;
 
   /**
    * Growth Rate
    */
   @IsEnum(GrowthRate)
-  growth_rate: GrowthRate;
+  growth_rate!: GrowthRate;
 
   /**
    * Botanical Description
@@ -131,7 +131,7 @@ export class CreateSpeciesDto {
   @IsArray()
   @ArrayUnique()
   @IsUUID('4', { each: true })
-  category_ids: string[];
+  category_ids!: string[];
 
   /**
    * Primary Category
@@ -140,5 +140,5 @@ export class CreateSpeciesDto {
    * Validation is performed inside CatalogService.
    */
   @IsUUID()
-  primary_category_id: string;
+  primary_category_id!: string;
 }

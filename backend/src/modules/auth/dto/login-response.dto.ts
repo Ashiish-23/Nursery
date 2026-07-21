@@ -1,3 +1,4 @@
+import type { UserRole } from '../../identity/enums/identity.enums';
 /**
  * LoginResponseDto
  * Response DTO for login and registration
@@ -10,7 +11,7 @@ export class LoginResponseDto {
     full_name: string;
     mobile_number: string;
     email?: string;
-    role: string;
+    role: UserRole;
     account_status: string;
   };
 }

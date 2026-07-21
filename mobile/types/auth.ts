@@ -5,7 +5,7 @@ export interface User {
   full_name: string;
   mobile_number: string;
   email?: string;
-  role: string;
+  role: UserRole;
   account_status: string;
 }
 
@@ -46,7 +46,7 @@ export interface AuthUser {
   full_name: string;
   mobile_number: string;
   email?: string;
-  role: string;
+  role: UserRole;
   account_status: string;
 }
 

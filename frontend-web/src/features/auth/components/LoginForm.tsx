@@ -1,21 +1,22 @@
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { useAuth } from '../../../app/providers/useAuth';
-import type { LoginRequest } from '../../../shared/types/auth';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const LoginRequestSchema = z.object({
-  mobile_number: z.string().min(10).max(15),
-  password: z.string().min(6),
+  mobile_number: z.string().regex(/^[0-9]{10,15}$/, "Enter a valid mobile number"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
 });
+
+type LoginFormData = z.infer<typeof LoginRequestSchema>;
 
 export const LoginForm: React.FC = () => {
     const { login, loading } = useAuth();
-    const { register, handleSubmit, formState: { errors }, } = useForm<LoginRequest>({
+    const { register, handleSubmit, formState: { errors }, } = useForm<LoginFormData>({
         resolver: zodResolver(LoginRequestSchema),
     });
 
-  const handleFormSubmit = async ( data: LoginRequest ): Promise<void> => {
+  const handleFormSubmit = async ( data: LoginFormData ): Promise<void> => {
   try {
     await login(data);
   } catch {

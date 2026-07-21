@@ -3,6 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '../../../core/config/config.service';
 import { UsersService } from '../../users/users.service';
+import { UserRole } from '../../identity/enums/identity.enums';
 
 /**
  * JWT Payload
@@ -17,7 +18,7 @@ import { UsersService } from '../../users/users.service';
 interface JwtPayload {
   sub: string;
   mobile_number: string;
-  role: string;
+  role: UserRole;
 }
 
 /**

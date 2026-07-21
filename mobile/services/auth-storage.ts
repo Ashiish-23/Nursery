@@ -1,5 +1,6 @@
 import * as SecureStore from 'expo-secure-store';
 import { Platform } from 'react-native';
+import type { UserRole } from '@/components/form';
 
 const TOKEN_KEY = 'sasyavana_access_token';
 const USER_KEY = 'sasyavana_user';
@@ -9,7 +10,7 @@ export interface User {
   full_name: string;
   mobile_number: string;
   email?: string;
-  role: string;
+  role: UserRole;
   account_status: string;
 }
 

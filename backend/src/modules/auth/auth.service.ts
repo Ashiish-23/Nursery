@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { UsersService } from '../users/users.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
+import type { UserRole } from '../identity/enums/identity.enums';
 
 /**
  * AuthService
@@ -14,7 +15,7 @@ import { LoginDto } from './dto/login.dto';
 interface JwtPayload {
   sub: string;
   mobile_number: string;
-  role: string;
+  role: UserRole;
 }
 
 @Injectable()
@@ -31,7 +32,7 @@ export class AuthService {
   private generateAccessToken(user: {
     id: string;
     mobile_number: string;
-    role: string;
+    role: UserRole;
   }): string {
     return this.jwtService.sign({
       sub: user.id,
@@ -76,7 +77,7 @@ export class AuthService {
     const access_token = this.generateAccessToken({
       id: user.id,
       mobile_number: user.mobile_number,
-      role: roleData.role_name,
+      role: roleData.role_name as UserRole,
     });
 
     return {
@@ -120,7 +121,7 @@ export class AuthService {
     const access_token = this.generateAccessToken({
       id: user.id,
       mobile_number: user.mobile_number,
-      role: user.roles.role_name,
+      role: user.roles.role_name as UserRole,
     });
 
     return {

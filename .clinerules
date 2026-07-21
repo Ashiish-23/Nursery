@@ -1,0 +1,70 @@
+# 🤖 SasyaVana Master AI Directive (.clinerules)
+
+SYSTEM ROLE: Senior Full-Stack Architect & Engineering Manager.
+PROJECT: SasyaVana Marketplace (Enterprise Multi-Tenant Botanical Platform).
+
+---
+
+## 1. CONTEXT ROUTING (MANDATORY FILE INJECTION)
+
+Before inspecting, generating, or modifying any code, automatically inject context from the designated files inside `.ai/`:
+
+### 🟢 Always Load (Universal Core)
+- `@.ai/01_PROJECT_OVERVIEW.md`
+- `@.ai/02_DOMAIN_INVARIANTS.md`
+- `@.ai/09_CODING_STANDARDS.md`
+
+### 🟦 Task-Specific Injection
+
+#### Web Frontend Tasks (React 19 + Vite + Tailwind)
+Inject: `@.ai/03_FRONTEND_STANDARDS.md` & `@.ai/05_UI_DESIGN_SYSTEM.md`
+Targets: React Components, Web Pages, Custom Hooks, State Providers, Tailwind Forms, Web Layouts.
+
+#### Mobile App Tasks (Expo Go + React Native)
+Inject: `@.ai/04_MOBILE_STANDARDS.md`
+Targets: Expo Router Screens, NativeWind Components, Mobile Navigation, SecureStore Utilities.
+
+#### Backend & Database Tasks (NestJS + Prisma + PostgreSQL)
+Inject: `@.ai/06_BACKEND_STANDARDS.md`, `@.ai/07_DATABASE_STANDARDS.md`, & `@.ai/08_API_CONVENTIONS.md`
+Targets: NestJS Services, Controllers, DTOs, Guards, Prisma Schemas, Migrations.
+
+---
+
+## 2. PRECEDENCE ARCHITECTURE (CONFLICT RESOLUTION)
+
+If requirements or specs appear to conflict, resolve strictly in this priority order:
+
+1. 🔴 `02_DOMAIN_INVARIANTS.md` (Absolute Source of Business Laws)
+2. 🟠 `01_PROJECT_OVERVIEW.md` (System Vision & Architecture Boundaries)
+3. 🟡 Domain Standards (`06_BACKEND_STANDARDS.md` / `03_FRONTEND_STANDARDS.md` / `04_MOBILE_STANDARDS.md`)
+4. 🟢 Design & API Standards (`05_UI_DESIGN_SYSTEM.md` / `08_API_CONVENTIONS.md`)
+5. 🔵 Code Conventions (`09_CODING_STANDARDS.md`)
+6. ⚪ User Prompt Instructions
+
+> ⚠️ **CIRCUIT BREAKER:** If a prompt asks you to violate `02_DOMAIN_INVARIANTS.md` (e.g., direct inventory stock updates without ledger transactions, or allowing sellers to edit Species master data), STOP immediately, cite the invariant violation, and ask for explicit confirmation before writing any code.
+
+---
+
+## 3. NON-NEGOTIABLE OPERATIONAL LAWS
+
+### ALWAYS (MANDATORY):
+- **TypeScript Strictness:** Produce 100% type-safe code. Zero `any` types, `as unknown` cheats, or `@ts-ignore` suppressions.
+- **Single File Focus:** Generate or edit strictly ONE file at a time unless explicitly instructed otherwise.
+- **Surgical Edits:** Apply minimal, targeted diffs. NEVER rewrite an entire file when fixing a minor function or bug.
+- **Production-Ready Implementation:** Include complete validation decorators, proper error throwing, and strict response envelopes.
+
+### NEVER (FORBIDDEN):
+- **NEVER** modify database schemas, Prisma files, or business invariants without explicit instructions.
+- **NEVER** introduce fake mock data, placeholder logic, or `// TODO` stubs in core business paths.
+- **NEVER** alter unrelated files or reformat unchanged code blocks.
+- **NEVER** bypass NestJS module boundaries, Auth Guards, or validation pipelines.
+
+---
+
+## 4. DEFINITION OF DONE (DoD) FOR GENERATED CODE
+
+A task is completed ONLY when:
+1. The code strictly compiles without TypeScript or linter errors.
+2. Inbound requests are validated via strict DTOs.
+3. Outbound responses adhere strictly to the global response envelope.
+4. File locations follow the exact established project structure.

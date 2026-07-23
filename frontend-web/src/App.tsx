@@ -2,11 +2,12 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
 import MainLayout from './layouts/MainLayout';
 
+import { Button } from "./shared/ui/button";
+
 function HomePage() {
   return (
-    <div>
-      <h1>Welcome to SasyaVana 🌿</h1>
-      <p>Home Page Placeholder</p>
+    <div className="flex min-h-screen items-center justify-center">
+      <Button>Welcome to SasyaVana 🌿</Button>
     </div>
   );
 }

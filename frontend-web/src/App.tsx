@@ -1,16 +1,7 @@
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 
-import MainLayout from './layouts/MainLayout';
-
-import { Button } from "./shared/ui/button";
-
-function HomePage() {
-  return (
-    <div className="flex min-h-screen items-center justify-center">
-      <Button>Welcome to SasyaVana 🌿</Button>
-    </div>
-  );
-}
+import MainLayout from "./layouts/MainLayout";
+import { HomePage } from "./pages/HomePage";
 
 export default function App() {
   return (
